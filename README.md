@@ -1,6 +1,8 @@
-#Notifications
+#### THIS README IS OUT OF DATE.... AGAIN!
 
-A notifications pattern strait out of Telescope! (actually still in Telescope >_>) Worth notting that everything in here is open to change. Any refrences to telescope may or may not have been aproved.
+#Universal Notifications
+
+A notifications pattern strait out of Telescope! By itself it supports in app notifications but allows for extension packages that add anything from email to text messages.
 
 ##Current Status:
 Feedback wanted! Help Appreciated. README improvements necessary, you are going to want to look at the code. I will clean this mess up soon.
