@@ -19,6 +19,5 @@ Package.onUse(function(api) {
 
   api.addFiles('lib/server.js', 'server');
 
-  api.export(['Notifications']);});
-
+  api.export(['Notifications']);
 });
