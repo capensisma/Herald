@@ -2,37 +2,31 @@
 
 #Universal Notifications
 
-A notifications pattern strait out of Telescope! By itself it supports in app notifications but allows for extension packages that add anything from email to text messages.
+A notifications pattern straight out of Telescope! By itself it supports in app notifications but allows for extension packages that add anything from email to text messages.
 
 ##Current Status:
-Feedback wanted! Help Appreciated. README improvements necessary, you are going to want to look at the code. I will clean this mess up soon.
-
-#### some example features 
-*existing, needed or as possible extension packages*
-
-- The notifications should be aware the users online state and trigger higher levels of notification appropriately 
-  - It could be aware of user idle state, via user-status, and if idle for x time trigger higher levels of notification
-  - An example higher levels of notification would email
-  - higher levels of notification could also be instant or use a timer as needed
-- Emails could be as one off or a notifications summery.
-- I would love some kind of push notification for mobile, OS X, and any Push compatible friends
-  - If all else fails send emails.
-- All the above should be customizable on a per user basis. So a user could set summary emails only at 7:00 user local time.
+Feedback wanted! Help Appreciated. 
+Nearly ready to be added to Telescope. 
+When that happens I hope to see more movement on extention packages.
 
 ## Usage
 
 #### On Client and Sever
-You will want to set up an event type. Your notification **must** have a type. The benefit to this is it lets you add metadata and a dynamic message to your notifications. This is using a collection transform in the background.
+You will want to set up a courier. Couriers do all the heavy lifting and manage dilivery of all the notifications. Without an extention package the Couriers insures the notification is delivered to the client browser. When you add extention pacakges they will also manage your other forms of media.
+
+Your courier must have a name and media, at least one medium.
 
 An example from Telescope
 ```js
-Notifications.addEventType('newReply', {
+Notifications.addCourier('newReply', {
   message: function () {
-    return this.properties.comment.author + " has replied to your comment on \"" + this.properties.post.title + "\"";
+    return this.properties.comment.author + 
+    " has replied to your comment on \"" + 
+    this.properties.post.title + "\"";
   },
-  metadata: {
-    emailTemplate: 'emailNewReply',
-    template: 'notificationNewReply'
+  media: {
+    name: 'onsite', //Metoer app medium
+    default: true //If the user has not notificaiton settings send by default (currently required)
   }
 });
 
