@@ -10,14 +10,15 @@ Package.onUse(function(api) {
   api.use(['standard-app-packages']); //TODO: reduce this to the minimum requirements.
 
   //if iron route is present add 'seen route' logic
+  api.use('iron:router', {week: true}); 
   //if user-status is present add online/idle logic
-  api.use(['iron:router', 'mizzao:user-status'], {week: true}); 
+  api.use('mizzao:user-status', {week: true}); 
 
   api.addFiles('lib/notifications.js');
 
   api.addFiles('lib/client.js', 'client');
 
-  api.addFiles('lib/server.js', 'server');
+  api.addFiles(['lib/server.js', 'lib/escalate.js'], 'server');
 
   api.export(['Notifications']);
 });
