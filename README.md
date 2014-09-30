@@ -7,16 +7,14 @@ A notifications pattern straight out of Telescope! By itself it supports in app 
 ##Current Status:
 Feedback wanted! Help Appreciated. 
 Nearly ready to be added to Telescope. 
-When that happens I hope to see more movement on extention packages.
+When that happens I hope to see more movement on extension packages.
 
 ## Usage
 
 #### On Client and Sever
-You will want to set up a courier. Couriers do all the heavy lifting and manage dilivery of all the notifications. Without an extention package the Couriers insures the notification is delivered to the client browser. When you add extention pacakges they will also manage your other forms of media.
+You will want to set up a courier. Couriers do all the heavy lifting and manage delivery of all the notifications. Without an extension package the Couriers insures the notification is delivered to the client browser. When you add extension packages they will also manage your other forms of media.
 
 Your courier must have a name and media, at least one medium.
-
-An example from Telescope
 ```js
 Notifications.addCourier('newReply', {
   message: function () {
@@ -25,8 +23,8 @@ Notifications.addCourier('newReply', {
     this.properties.post.title + "\"";
   },
   media: {
-    name: 'onsite', //Metoer app medium
-    default: true //If the user has not notificaiton settings send by default (currently required)
+    name: 'onsite', //Meteor app medium
+    default: true //If the user has no notification preference send by default (currently required)
   }
 });
 
@@ -101,3 +99,4 @@ Notifications.collection.allow({
   }
 });
 ```
+
