@@ -1,6 +1,8 @@
-#Notifications
+#### THIS README IS OUT OF DATE.... AGAIN!
 
-A notifications pattern strait out of Telescope! (actually still in Telescope >_>) Worth notting that everything in here is open to change. Any refrences to telescope may or may not have been aproved.
+#Universal Notifications
+
+A notifications pattern strait out of Telescope! By itself it supports in app notifications but allows for extension packages that add anything from email to text messages.
 
 ##Current Status:
 Feedback wanted! Help Appreciated. README improvements necessary, you are going to want to look at the code. I will clean this mess up soon.
@@ -8,7 +10,6 @@ Feedback wanted! Help Appreciated. README improvements necessary, you are going 
 #### some example features 
 *existing, needed or as possible extension packages*
 
-- The notifications should be have in app alerts (see telescope)
 - The notifications should be aware the users online state and trigger higher levels of notification appropriately 
   - It could be aware of user idle state, via user-status, and if idle for x time trigger higher levels of notification
   - An example higher levels of notification would email
@@ -17,7 +18,7 @@ Feedback wanted! Help Appreciated. README improvements necessary, you are going 
 - I would love some kind of push notification for mobile, OS X, and any Push compatible friends
   - If all else fails send emails.
 - All the above should be customizable on a per user basis. So a user could set summary emails only at 7:00 user local time.
-- RSS, IRC (maybe ?), I could go on...
+
 ## Usage
 
 #### On Client and Sever
