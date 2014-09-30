@@ -17,11 +17,6 @@ You will want to set up a courier. Couriers do all the heavy lifting and manage 
 Your courier must have a name and media, at least one medium.
 ```js
 Notifications.addCourier('newReply', {
-  message: function () {
-    return this.properties.comment.author + 
-    " has replied to your comment on \"" + 
-    this.properties.post.title + "\"";
-  },
   media: {
     name: 'onsite', //Meteor app medium
     default: true //If the user has no notification preference send by default (currently required)
@@ -32,29 +27,16 @@ Notifications.addCourier('newReply', {
 
 #### On the Server
 You can create a new notification on the server with createNotification. 
-
-This will likely be cleaned up but you most supply a userId, and event. Properties stores in collection metadata, may need to name that better.
-
-An example also out of Telescope.
 ```js
 
 params = {
     event: 'newReply',
-    properties: {
-      comment: //some comment data
-      post: //some post data
-      parentComment: //some parentComment data
+    data: {
+      //usualy things like post _id and name
     }
   };
 
-Notifications.createNotification(userToNotifyId, params, function (error, notificationId) { 
-    if (error) throw error; //output error like normal
-    
-    if(Meteor.isServer && getUserSetting('notifications.replies', false, userToNotify)){
-      var notification = Notifications.collection.findOne(notificationId);
-      // send email
-    }
-  })
+Notifications.createNotification(userId, params)
 ```
 #### On the Client
 
