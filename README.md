@@ -41,7 +41,7 @@ Currently there no no prebuilt templates but creating your own is easy
 ```html
 <template name='notifications'>
   <div class='list'>
-    {{each notifications}}
+    {{#each notifications}}
       <div class='item'>
         {{this.message}} <!-- Blaze will call the function -->
       </div>
@@ -54,7 +54,7 @@ Currently there no no prebuilt templates but creating your own is easy
 Template.notifications.notifications = Notifications.collection.find();
 Template.notifications.events({
   'click .item': function (event, template) {
-    Notifications.collection.update(this.data._id, {$set: {read: true} });
+    Notifications.collection.update(this._id, {$set: {read: true} });
   }
 });
 ```
