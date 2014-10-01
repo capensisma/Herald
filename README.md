@@ -96,4 +96,4 @@ Your courier must have a name and media, at least one medium. Without an extensi
 
 #### Runners
 
-Behind the scenes media call runners. With the exception of `onsite` there is one runner per medium. Normal usage of this package will not require you manage the runners but package developers are should review the runner API.
+Behind the scenes media call runners. With the exception of `onsite`, there is one runner per medium. Normal usage of this package will not require you manage the runners but package developers should review the runner API.
