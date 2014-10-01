@@ -1,7 +1,7 @@
 Package.describe({
   summary: "A Universal Notifications Engine",
   version: "0.4.0",
-  git: "https://github.com/Meteor-Reaction/notifications.git",
+  git: "https://github.com/Meteor-Reaction/harold.git",
   name: 'kestanous:harold'
 });
 
