@@ -18,7 +18,7 @@ Package.onUse(function(api) {
 
   api.addFiles('lib/client.js', 'client');
 
-  api.addFiles(['lib/server.js', 'lib/escalate.js'], 'server');
+  api.addFiles('lib/server.js', 'server');
 
   api.export(['Notifications']);
 });
