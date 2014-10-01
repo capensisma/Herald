@@ -13,7 +13,7 @@ First a simple example
 #### On Client and Sever
 
 ```js
-Notifications.addCourier('newPost', {
+Herald.addCourier('newPost', {
   media: {
     onsite: {} //Send notifications to client, with no custom configuration
   },
@@ -34,7 +34,7 @@ params = {
   }
 };
 
-Notifications.createNotification(userId, params)
+Herald.createNotification(userId, params)
 ```
 #### On the Client
 
@@ -53,10 +53,10 @@ Currently there is no prebuilt templates, but creating your own is easy
 ```
 
 ```js
-Template.notifications.notifications = Notifications.collection.find({read: false});
+Template.notifications.notifications = Herald.collection.find({read: false});
 Template.notifications.events({
   'click .item': function (event, template) {
-    Notifications.collection.update(this._id, {$set: {read: true} });
+    Herald.collection.update(this._id, {$set: {read: true} });
   }
 });
 ```
@@ -67,7 +67,7 @@ Template.notifications.events({
 
 #### Meteor Collection 'notifications'
 
-`Notifications.collection` is your notification Meteor Collection. Feel free to use this as you would with any Collection. The only limit is inserts. Client side inserts are denied and you should call `Notifications.createNotification(userId, params)` on the server.
+`Herald.collection` is your notification Meteor Collection. Feel free to use this as you would with any Collection. The only limit is inserts. Client side inserts are denied and you should call `Herald.createNotification(userId, params)` on the server.
 
 ```js
 notification = {
@@ -81,17 +81,17 @@ notification = {
 }
 ```
 
-You can add a `Notifications.collection.deny` if you would like to be more restrictive on client updates
+You can add a `Herald.collection.deny` if you would like to be more restrictive on client updates
  
  The built in permissions are:
 ```js
-Notifications.collection.allow({
+Herald.collection.allow({
   insert: function (userId, doc) { return false; },
   update: function (userId, doc) { return userId == doc.userId },
   remove: function (userId, doc) { return userId == doc.userId }
 });
 ```
-There is an built in pub/sub 'notifications' that sends notifications down to the client based on the cursor: `Notifications.collection.find({userId:this.userId, onsite: true});`
+There is an built in pub/sub 'notifications' that sends notifications down to the client based on the cursor: `Herald.collection.find({userId:this.userId, onsite: true});`
 
 Currently this package does **not** delete any notifications! You will likely want to do that yourself. I would recommend an observe function on the server removes notifications when they are read.
 
@@ -109,7 +109,7 @@ Behind the scenes media call runners. With the exception of `onsite`, there is o
 ## General API
 
 ### addCourier (both)
-Call with `Notifications.addCourier(name, object)`
+Call with `Herald.addCourier(name, object)`
 
 * name - The name of this courier, must be unique
 * object - notification parameters
@@ -136,7 +136,7 @@ Call with `Notifications.addCourier(name, object)`
     ```
 
 ### createNotification (server)
-Call with `Notifications.createNotification(userId, object)`
+Call with `Herald.createNotification(userId, object)`
 
 * userId - It accepts ether a user id or an array of user ids. It creates a separate notification for each user. 
 * object - notification parameters
@@ -159,14 +159,14 @@ Call with `Notifications.createNotification(userId, object)`
  Currently notification escalation is call as soon as the notification is created. When it is all non 'onsite' media call their respective runners. I would like to allow package users to delay this and call later. For example, I would like to check if the user is online and if so delay sending a email for 5 minutes. The assumption being that the user will respond to the in app notification. PRs are welcome ;)
 
 ### addRunner
-Adding more media and runners is very easy, just call `Notifications.addRunner(name, function(notification, user))`. The function context is media.yourMedium from addCourier.
+Adding more media and runners is very easy, just call `Herald.addRunner(name, function(notification, user))`. The function context is media.yourMedium from addCourier.
 
 ```js
-Notifications.addRunner('yourMedium', function (notification, user) {
+Herald.addRunner('yourMedium', function (notification, user) {
   this.example //foo
 });
 
-Notifications.addCourier('newPost', {
+Herald.addCourier('newPost', {
   media: {
     yourMedium: {
       example: 'foo'
