@@ -6,6 +6,11 @@ A notifications pattern straight out of Telescope! By itself it supports in app 
 
 * Herald-email ([GitHub](https://github.com/Meteor-Reaction/Herald-email)) - Add email to Harold
 
+#### Useful additional packages
+
+* [Meteor SSR](https://github.com/meteorhacks/meteor-ssr) - Templates just work on server, works with `message()`!
+
+
 ## Basic Usage
 
 First a simple example
