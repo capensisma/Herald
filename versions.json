@@ -137,8 +137,12 @@
       "1.0.3"
     ],
     [
+      "mizzao:timesync",
+      "0.2.2"
+    ],
+    [
       "mizzao:user-status",
-      "0.1.0"
+      "0.6.2"
     ],
     [
       "mobile-status-bar",
@@ -230,6 +234,6 @@
     ]
   ],
   "pluginDependencies": [],
-  "toolVersion": "meteor-tool@1.0.32",
+  "toolVersion": "meteor-tool@1.0.33",
   "format": "1.0"
 }
