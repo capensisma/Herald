@@ -1,10 +1,10 @@
-#Harold - Universal Notifications
+#Herald - Universal Notifications
 
 A notifications pattern straight out of Telescope! By itself it supports in app notifications but allows for extension packages that add anything from email to text messages.
 
 #### The current extension packages
 
-* Harold-email ([GitHub](https://github.com/Meteor-Reaction/Harold-email)) - Add email to Harold
+* Herald-email ([GitHub](https://github.com/Meteor-Reaction/Herald-email)) - Add email to Harold
 
 ## Basic Usage
 
