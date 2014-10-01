@@ -1,4 +1,4 @@
-#Harold - A Universal Notifications
+#Harold - Universal Notifications
 
 A notifications pattern straight out of Telescope! By itself it supports in app notifications but allows for extension packages that add anything from email to text messages.
 
