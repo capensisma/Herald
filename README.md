@@ -1,5 +1,3 @@
-#### THIS README IS OUT OF DATE.... AGAIN!
-
 #Universal Notifications
 
 A notifications pattern straight out of Telescope! By itself it supports in app notifications but allows for extension packages that add anything from email to text messages.
@@ -96,3 +94,6 @@ Couriers do all the heavy lifting and manage delivery of all the notifications. 
 
 Your courier must have a name and media, at least one medium. Without an extension package the only medium is `onsite`
 
+#### Runners
+
+Behind the scenes media call runners. With the exception of `onsite` there is one runner per medium. Normal usage of this package will not require you manage the runners but package developers are should review the runner API.
