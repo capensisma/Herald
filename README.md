@@ -36,7 +36,7 @@ Notifications.createNotification(userId, params)
 ```
 #### On the Client
 
-Currently there no no prebuilt templates but creating your own is easy
+Currently there is no prebuilt templates, but creating your own is easy
 
 ```html
 <template name='notifications'>
@@ -51,7 +51,7 @@ Currently there no no prebuilt templates but creating your own is easy
 ```
 
 ```js
-Template.notifications.notifications = Notifications.collection.find();
+Template.notifications.notifications = Notifications.collection.find({read: false});
 Template.notifications.events({
   'click .item': function (event, template) {
     Notifications.collection.update(this._id, {$set: {read: true} });
@@ -60,46 +60,39 @@ Template.notifications.events({
 ```
 
 
-##Current Features
+##Overview
 
 
-#### Couriers
+#### Meteor Collection 'notifications'
 
-You will want to set up a courier. Couriers do all the heavy lifting and manage delivery of all the notifications. Without an extension package the Couriers insures the notification is delivered to the client browser. When you add extension packages they will also manage your other forms of media.
+`Notifications.collection` is your notification Meteor Collection. Feel free to use this as you would with any Collection. The only limit is inserts. Client side inserts are denied and you should call `Notifications.createNotification(userId, params)` on the server.
 
-Your courier must have a name and media, at least one medium.
-
-#### Notifications.collection
-`Notifications.collection` is your notification Meteor Collection.
-
-##### A given notification instance
 ```js
 notification = {
-  userId //the user associated with this notification
-  event //the notification event type (explained later)
-  read //if the notification has been read 
-  createdAt //when the notification was created
-  message() //outputs some string
-  url //the associated url, if any, used by routeSeenByUser (explained later)
-  metadata //anything you need, useful in combo with notification.message()
+  userId //the userId associated with this notification.
+  courier //the notification courier. (explained later)
+  read //if the notification has been read.
+  escalated //if the notification has been escalated.
+  timestamp //when the notification was created.
+  url //the associated url, if any. (explained later)
+  data //anything you need, useful in combo with notification.message().
 }
 ```
 
-#### Client permissions 
- You can add a `Notifications.collection.deny` if you would like to be more restrictive on client updates
+You can add a `Notifications.collection.deny` if you would like to be more restrictive on client updates
  
  The built in permissions are:
 ```js
 Notifications.collection.allow({
-  insert: function(userId, doc){
-    // new notifications can only be created via a Meteor method
-    return false;
-  },
-  update: function (userId, doc) {
-    return userId == doc.userId
-  },
-  remove: function (userId, doc) {
-    return userId == doc.userId
-  }
+  insert: function (userId, doc) { return false; },
+  update: function (userId, doc) { return userId == doc.userId },
+  remove: function (userId, doc) { return userId == doc.userId }
 });
 ```
+
+#### Couriers
+
+Couriers do all the heavy lifting and manage delivery of all the notifications. By default the Couriers insures the notification is delivered to the client browser. When you add extension packages they will also manage your other forms of media.
+
+Your courier must have a name and media, at least one medium. Without an extension package the only medium is `onsite`
+
