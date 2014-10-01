@@ -87,6 +87,7 @@ Notifications.collection.allow({
   remove: function (userId, doc) { return userId == doc.userId }
 });
 ```
+There is an built in pub/sub 'notifications' that sends notifications down to the client based on the cursor: `Notifications.collection.find({userId:this.userId, onsite: true});`
 
 #### Couriers
 
