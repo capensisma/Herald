@@ -2,6 +2,10 @@
 
 A notifications pattern straight out of Telescope! By itself it supports in app notifications but allows for extension packages that add anything from email to text messages.
 
+#### The current extension packages
+
+* notifications-email ([GitHub](https://github.com/Meteor-Reaction/notifications-email)) - Add email to notifications
+
 ## Basic Usage
 
 First a simple example
@@ -102,7 +106,7 @@ Your courier must have a name and media, at least one medium. Without an extensi
 Behind the scenes media call runners. With the exception of `onsite`, there is one runner per medium. Normal usage of this package will not require you manage the runners but package developers should review the runner API.
 
 
-## API
+## General API
 
 ### addCourier (both)
 Call with `Notifications.addCourier(name, object)`
@@ -148,3 +152,25 @@ Call with `Notifications.createNotification(userId, object)`
   If you have iron:router added to your app you can automatically mark notifications as read based on when a user goes to specific routes. 
   
   Using the above `newPost` courier, lets say you set the notification `url: 'posts/[postId]'` when running `createNotification`. Assuming the route `posts/:postId`, if a user visits that route the appropriate notifications will be marked as read. This operation is currently done only on the client.
+
+## Extention API
+
+### escalate and delayEscalation
+ Currently notification escalation is call as soon as the notification is created. When it is all non 'onsite' media call their respective runners. I would like to allow package users to delay this and call later. For example, I would like to check if the user is online and if so delay sending a email for 5 minutes. The assumption being that the user will respond to the in app notification. PRs are welcome ;)
+
+### addRunner
+Adding more media and runners is very easy, just call `Notifications.addRunner(name, function(notification, user))`. The function context is media.yourMedium from addCourier.
+
+```js
+Notifications.addRunner('yourMedium', function (notification, user) {
+  this.example //foo
+});
+
+Notifications.addCourier('newPost', {
+  media: {
+    yourMedium: {
+      example: 'foo'
+    }
+  },
+});
+```
