@@ -89,6 +89,8 @@ Notifications.collection.allow({
 ```
 There is an built in pub/sub 'notifications' that sends notifications down to the client based on the cursor: `Notifications.collection.find({userId:this.userId, onsite: true});`
 
+Currently this package does **not** delete any notifications! You will likely want to do that yourself. I would recommend an observe function on the server removes notifications when they are read.
+
 #### Couriers
 
 Couriers do all the heavy lifting and manage delivery of all the notifications. By default the Couriers insures the notification is delivered to the client browser. When you add extension packages they will also manage your other forms of media.
@@ -98,3 +100,42 @@ Your courier must have a name and media, at least one medium. Without an extensi
 #### Runners
 
 Behind the scenes media call runners. With the exception of `onsite`, there is one runner per medium. Normal usage of this package will not require you manage the runners but package developers should review the runner API.
+
+
+## API
+
+### addCourier (both)
+Call with `Notifications.addCourier(name, object)`
+
+* name - The name of this courier, must be unique
+* object - notification parameters
+  * metadata - any general data you want added to the notification instance via collection transform
+  * message(string) - how to format the notification message. Can be a function, string, or an object.
+    * function: will run the function with the notification as its context (this) 
+    ```js
+      message = function () {return 'message' }
+      message() //template 'example'
+    ```
+    * string: will return a Template with the given name. It will have the notification as its data context.
+    ```js
+      message = 'message ' + this
+      message() 'message [Object object]'
+    ```
+    * object: can allow for more then one message, the property called will be based on the given string. Running message(string) without an argument will call object.default.
+    ```js
+      message = object: {
+        default: 'example',
+        fn: function () {return 'message' }
+      }
+      message() //template 'example'
+      message('fn') //message
+    ```
+
+### createNotification (server)
+Call with `Notifications.createNotification(userId, object)`
+
+* userId - It accepts ether a user id or an array of user ids. It creates a separate notification for each user. 
+* object - notification parameters
+  * courier - a string referencing a courier
+  * data - any data important to this specific notification, see courier metadata for general data
+  * url - if you are using iron:router see `routeSeenByUser`
