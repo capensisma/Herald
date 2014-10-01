@@ -113,13 +113,13 @@ Call with `Notifications.addCourier(name, object)`
   * message(string) - how to format the notification message. Can be a function, string, or an object.
     * function: will run the function with the notification as its context (this) 
     ```js
-      message = function () {return 'message' }
-      message() //template 'example'
+      message = function () {return 'message ' + this }
+      message() //'message [Object object]'
     ```
     * string: will return a Template with the given name. It will have the notification as its data context.
     ```js
-      message = 'message ' + this
-      message() 'message [Object object]'
+      message = 'example'
+      message() //template 'example'
     ```
     * object: can allow for more then one message, the property called will be based on the given string. Running message(string) without an argument will call object.default.
     ```js
@@ -139,3 +139,12 @@ Call with `Notifications.createNotification(userId, object)`
   * courier - a string referencing a courier
   * data - any data important to this specific notification, see courier metadata for general data
   * url - if you are using iron:router see `routeSeenByUser`
+
+
+### markAllNotificationsAsRead (method)
+  To set call of the current users notifications to read run `Meteor.call('markAllNotificationsAsRead', [callback])`
+  
+### routeSeenByUser (if Package iron:router)
+  If you have iron:router added to your app you can automatically mark notifications as read based on when a user goes to specific routes. 
+  
+  Using the above `newPost` courier, lets say you set the notification `url: 'posts/[postId]'` when running `createNotification`. Assuming the route `posts/:postId`, if a user visits that route the appropriate notifications will be marked as read. This operation is currently done only on the client.
