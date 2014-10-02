@@ -22,6 +22,7 @@ Herald.addCourier('newPost', {
   media: {
     onsite: {} //Send notifications to client, with no custom configuration
   },
+
   //will be a function on the collection instance, returned from find()/findOne()
   message: function () { return 'There is a new post: "' + this.post.name + '"'; }
 });
@@ -118,7 +119,6 @@ Call with `Herald.addCourier(name, object)`
 
 * name - The name of this courier, must be unique
 * object - notification parameters
-  * metadata - any general data you want added to the notification instance via collection transform
   * message(string) - how to format the notification message. Can be a function, string, or an object.
     * function: will run the function with the notification as its context (this) 
     ```js
@@ -139,6 +139,7 @@ Call with `Herald.addCourier(name, object)`
       message() //template 'example'
       message('fn') //message
     ```
+  * transform - any **static** data or functions you want added to the notification instance via collection transform
 
 ### createNotification (server)
 Call with `Herald.createNotification(userId, object)`
