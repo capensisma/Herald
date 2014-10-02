@@ -1,5 +1,8 @@
 `Last updated: 2014-10-01`
 
+## v0.6.0
+  * added transform and deprecated metadata
+
 ## v0.5.3
   * bug fix regarding iron:router.Router and load order 
   * Improved error outputs
