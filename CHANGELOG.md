@@ -1,5 +1,8 @@
 `Last updated: 2014-10-01`
 
+## v0.5.1
+  * weak dependency fixes
+
 ## v0.5.0
  * Namespace change: Notifications -> Herald
    * Notifications aliased to Herald
