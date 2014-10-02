@@ -1,5 +1,8 @@
 `Last updated: 2014-10-01`
 
+## v0.5.2
+  * moved iron:router code to client only
+
 ## v0.5.1
   * weak dependency fixes
 

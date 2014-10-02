@@ -1,6 +1,6 @@
 Package.describe({
   summary: "A Universal Notifications Engine",
-  version: "0.5.1",
+  version: "0.5.2",
   git: "https://github.com/Meteor-Reaction/Herald.git",
   name: 'kestanous:herald'
 });

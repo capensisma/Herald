@@ -1,10 +1,6 @@
 {
   "dependencies": [
     [
-      "accounts-base",
-      "1.1.1"
-    ],
-    [
       "application-configuration",
       "1.0.2"
     ],
@@ -39,10 +35,6 @@
     [
       "check",
       "1.0.1"
-    ],
-    [
-      "coffeescript",
-      "1.0.3"
     ],
     [
       "ddp",
@@ -85,22 +77,6 @@
       "1.0.0"
     ],
     [
-      "iron:core",
-      "0.3.4"
-    ],
-    [
-      "iron:dynamic-template",
-      "0.4.1"
-    ],
-    [
-      "iron:layout",
-      "0.4.1"
-    ],
-    [
-      "iron:router",
-      "0.9.4"
-    ],
-    [
       "jquery",
       "1.0.0"
     ],
@@ -111,10 +87,6 @@
     [
       "livedata",
       "1.0.10"
-    ],
-    [
-      "localstorage",
-      "1.0.0"
     ],
     [
       "logging",
@@ -135,14 +107,6 @@
     [
       "minimongo",
       "1.0.3"
-    ],
-    [
-      "mizzao:timesync",
-      "0.2.2"
-    ],
-    [
-      "mizzao:user-status",
-      "0.6.2"
     ],
     [
       "mobile-status-bar",
@@ -182,10 +146,6 @@
     ],
     [
       "routepolicy",
-      "1.0.1"
-    ],
-    [
-      "service-configuration",
       "1.0.1"
     ],
     [
