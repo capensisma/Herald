@@ -1,5 +1,9 @@
 `Last updated: 2014-10-01`
 
+## v0.5.3
+  * bug fix regarding iron:router.Router and load order 
+  * Improved error outputs
+
 ## v0.5.2
   * moved iron:router code to client only
 
