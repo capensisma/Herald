@@ -18,7 +18,7 @@ The message data will be transmitted via all media (email, in-app-messaging, and
 
 ## Basic Usage
 
-First a simple example
+First a simple example (also see the [example app](https://github.com/Meteor-Reaction/Herald-Example))
 
 #### On Client and Sever
 
