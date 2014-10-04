@@ -2,7 +2,7 @@
 
 A notifications pattern straight out of Telescope! 
 
-Herald lets you easily send messages to any number of recipients via nay courier included within your app by simply supplying the courier, recipient list, and data.
+Herald lets you easily send messages to any number of recipients via any courier included within your app by simply supplying the courier, recipient list, and data.
 
 The message data will be transmitted via all media (email, in-app-messaging, and/or other) common to both the courier and each recipient's preferences. Additionally, the courier will properly format each message's data appropriate to the media being utilized.). 
 
