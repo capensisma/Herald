@@ -1,6 +1,8 @@
 #Herald - Universal Notifications
 
-A notifications pattern straight out of Telescope! By itself it supports in app notifications but allows for extension packages that add anything from email to text messages.
+A notifications pattern straight out of Telescope! 
+
+Herald lets you easily send messages to any recipient via couriers within your app. A courier can use any number of media such as in app notifications or email. (Coming soon) Couriers will respect user preferences and only send messages on the media they allow.
 
 #### The current extension packages
 
@@ -16,6 +18,8 @@ A notifications pattern straight out of Telescope! By itself it supports in app 
 First a simple example
 
 #### On Client and Sever
+
+First define your courier.
 
 ```js
 Herald.addCourier('newPost', {
@@ -101,11 +105,16 @@ There is an built in pub/sub 'notifications' that sends notifications down to th
 
 Currently this package does **not** delete any notifications! You will likely want to do that yourself. I would recommend an observe function on the server removes notifications when they are read.
 
+#### Media
+
+TODO: explain these
+
 #### Couriers
 
 Couriers do all the heavy lifting and manage delivery of all the notifications. By default the Couriers insures the notification is delivered to the client browser. When you add extension packages they will also manage your other forms of media.
 
-Your courier must have a name and media, at least one medium. Without an extension package the only medium is `onsite`
+Your courier must have a name and media (at least one medium). Without an extension package the only medium is `onsite`
+
 
 #### Runners
 
