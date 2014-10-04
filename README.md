@@ -2,7 +2,10 @@
 
 A notifications pattern straight out of Telescope! 
 
-Herald lets you easily send messages to any recipient via couriers within your app. A courier can use any number of media such as in app notifications or email. (Coming soon) Couriers will respect user preferences and only send messages on the media they allow.
+Herald lets you easily send messages to any number of recipients via nay courier included within your app by simply supplying the courier, recipient list, and data.
+
+The message data will be transmitted via all media (email, in-app-messaging, and/or other) common to both the courier and each recipient's preferences. Additionally, the courier will properly format each message's data appropriate to the media being utilized.). 
+
 
 #### The current extension packages
 
@@ -19,7 +22,7 @@ First a simple example
 
 #### On Client and Sever
 
-First define your courier.
+First define your courier. In this example the courier will only send messages `onste` (in app notifications). It also provids an optional pre-formated message.
 
 ```js
 Herald.addCourier('newPost', {
