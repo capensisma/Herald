@@ -4,7 +4,7 @@ A notifications pattern straight out of Telescope!
 
 Herald lets you easily send messages to any number of recipients via any courier included within your app by simply supplying the courier, recipient list, and data.
 
-The message data will be transmitted via all media (email, in-app-messaging, and/or other) common to both the courier and each recipient's preferences. Additionally, the courier will properly format each message's data appropriate to the media being utilized.). 
+The message data will be transmitted via all media (email, in-app-messaging, and/or other) common to both the courier and each recipient's preferences. Additionally, the courier will properly format each message's data appropriate to the media being utilized. (user preferences not yet officially supported)
 
 
 #### The current extension packages
@@ -110,7 +110,7 @@ Currently this package does **not** delete any notifications! You will likely wa
 
 #### Media
 
-TODO: explain these
+In this package media refers to the many types of mediums that you can use transmit messages. Most common examples would be in-app-notifications and Emails. In the future I hope to expand this list to include things like push notifications and text messages.
 
 #### Couriers
 
