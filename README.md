@@ -1,6 +1,12 @@
 #Herald - Universal Notifications
+[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/Meteor-Reaction/Herald?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-A notifications pattern straight out of Telescope! By itself it supports in app notifications but allows for extension packages that add anything from email to text messages.
+A notifications pattern straight out of Telescope! 
+
+Herald lets you easily send messages to any number of recipients via any courier included within your app by simply supplying the courier, recipient list, and data.
+
+The message data will be transmitted via all media (email, in-app-messaging, and/or other) common to both the courier and each recipient's preferences. Additionally, the courier will properly format each message's data appropriate to the media being utilized. (user preferences not yet officially supported)
+
 
 #### The current extension packages
 
@@ -13,9 +19,11 @@ A notifications pattern straight out of Telescope! By itself it supports in app 
 
 ## Basic Usage
 
-First a simple example
+First a simple example (also see the [example app](https://github.com/Meteor-Reaction/Herald-Example))
 
 #### On Client and Sever
+
+First define your courier. In this example the courier will only send messages `onste` (in app notifications). It also provids an optional pre-formated message.
 
 ```js
 Herald.addCourier('newPost', {
@@ -101,11 +109,16 @@ There is an built in pub/sub 'notifications' that sends notifications down to th
 
 Currently this package does **not** delete any notifications! You will likely want to do that yourself. I would recommend an observe function on the server removes notifications when they are read.
 
+#### Media
+
+In this package media refers to the many types of mediums that you can use transmit messages. Most common examples would be in-app-notifications and Emails. In the future I hope to expand this list to include things like push notifications and text messages.
+
 #### Couriers
 
 Couriers do all the heavy lifting and manage delivery of all the notifications. By default the Couriers insures the notification is delivered to the client browser. When you add extension packages they will also manage your other forms of media.
 
-Your courier must have a name and media, at least one medium. Without an extension package the only medium is `onsite`
+Your courier must have a name and media (at least one medium). Without an extension package the only medium is `onsite`
+
 
 #### Runners
 
