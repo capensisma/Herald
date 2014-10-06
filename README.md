@@ -1,4 +1,5 @@
 #Herald - Universal Notifications
+[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/Meteor-Reaction/Herald?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 A notifications pattern straight out of Telescope! 
 
