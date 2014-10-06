@@ -1,5 +1,9 @@
 `Last updated: 2014-10-01`
 
+## v0.8.0
+  * Runners now require the where property, string or array
+  * Autorun client-side runners where notifications are unread
+
 ## v0.7.2
   * Fixed bug caused by Herald.userPrefrence where no notifications would be sent.
 

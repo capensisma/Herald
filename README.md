@@ -183,10 +183,12 @@ Adding more media and runners is very easy, just call `Herald.addRunner(object)`
 * object.name (string) - the name of the new medium
 * object.run (function) - The function context is media.yourMedium from addCourier. From here you can do things like Email.send()
 * object.check (function) - The function context is media.yourMedium from addCourier. Runs for every courier and lets you check to make sure their media.yourMedium definition is valid
+* object.where (string || array) - a string or array of strings listing the target environment, server or client. 
 
 ```js
 var runner = {
-  name: 'yourMedium'
+  name: 'yourMedium',
+  where: ['server']
 }
 runner.run = function (notification, user) {
   this.example; //foo
