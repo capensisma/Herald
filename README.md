@@ -178,12 +178,26 @@ Call with `Herald.createNotification(userId, object)`
  Currently notification escalation is called as soon as the notification is created. The media then call their respective runners. I would like to allow package users to delay this and call later. For example, I would like to check if the user is online and if so delay sending a email for 5 minutes. The assumption being that the user will respond to the in app notification. PRs are welcome ;)
 
 ### addRunner
-Adding more media and runners is very easy, just call `Herald.addRunner(name, function(notification, user))`. The function context is media.yourMedium from addCourier.
+Adding more media and runners is very easy, just call `Herald.addRunner(object)`. 
+
+* object.name (string) - the name of the new medium
+* object.run (function) - The function context is media.yourMedium from addCourier. From here you can do things like Email.send()
+* object.check (function) - The function context is media.yourMedium from addCourier. Runs for every courier and lets you check to make sure their media.yourMedium definition is valid
 
 ```js
-Herald.addRunner('yourMedium', function (notification, user) {
-  this.example //foo
-});
+var runner = {
+  name: 'yourMedium'
+}
+runner.run = function (notification, user) {
+  this.example; //foo
+}
+
+runner.run = function (notification, user) {
+  if (!this.example) 
+    throw new Error('Herald: example must be defined for `myMedium`')
+}
+
+Herald.addRunner();
 
 Herald.addCourier('newPost', {
   media: {
