@@ -1,5 +1,9 @@
 `Last updated: 2014-10-01`
 
+## v0.7.0
+  * BREAKING CHANGE! - addRunner has a new api
+  * Herald.userPrefrence is a noop for dev overloads
+
 ## v0.6.0
   * added transform and deprecated metadata
 
