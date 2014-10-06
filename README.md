@@ -10,7 +10,7 @@ The message data will be transmitted via all media (email, in-app-messaging, and
 
 #### The current extension packages
 
-* Herald-email ([GitHub](https://github.com/Meteor-Reaction/Herald-email)) - Add email to Harold
+* [Herald-email](https://atmospherejs.com/kestanous/herald-email) ([GitHub](https://github.com/Meteor-Reaction/Herald-email)) - Add email to Harold
 
 #### Useful additional packages
 
@@ -192,12 +192,12 @@ runner.run = function (notification, user) {
   this.example; //foo
 }
 
-runner.run = function (notification, user) {
+runner.check = function (notification, user) {
   if (!this.example) 
-    throw new Error('Herald: example must be defined for `myMedium`')
+    throw new Error('Herald-MyMedium : example must be defined for `myMedium`')
 }
 
-Herald.addRunner();
+Herald.addRunner(runner);
 
 Herald.addCourier('newPost', {
   media: {
