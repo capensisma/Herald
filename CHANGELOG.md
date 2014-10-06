@@ -1,5 +1,8 @@
 `Last updated: 2014-10-01`
 
+## v0.7.2
+  * Fixed bug caused by Herald.userPrefrence where no notifications would be sent.
+
 ## v0.7.1 
   * moved runnder definitions to lib for client side runners.
 
