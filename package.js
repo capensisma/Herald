@@ -14,11 +14,21 @@ Package.onUse(function(api) {
   //if user-status is present add online/idle logic
   api.use('mizzao:user-status@0.6.2',['server', 'client'], {weak: true}); 
 
-  api.addFiles('lib/notifications.js');
+  api.addFiles([
+    'lib/$herald.js', 
+    'lib/collection.js', 
+    'lib/courier.js', 
+    'lib/runners.js', 
+    'lib/user.js'
+  ]);
 
-  api.addFiles('lib/client.js', 'client');
+  api.addFiles('client/startup.js', 'client');
 
-  api.addFiles('lib/server.js', 'server');
+  api.addFiles([
+    'server/createNotification.js', 
+    'server/escalate.js', 
+    'server/publish.js'
+  ], 'server');
 
   api.export(['Notifications', 'Herald']);
 });

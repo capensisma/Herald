@@ -1,4 +1,4 @@
-`Last updated: 2014-10-01`
+`Last updated: 2014-10-06`
 
 ## v0.8.0
   * Runners now require the where property, string or array
