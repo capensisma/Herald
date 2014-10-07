@@ -11,6 +11,7 @@ The message data will be transmitted via all media (email, in-app-messaging, and
 #### The current extension packages
 
 * [Herald-email](https://atmospherejs.com/kestanous/herald-email) ([GitHub](https://github.com/Meteor-Reaction/Herald-email)) - Add email to Harold
+* [Herald-Web-Notifications](https://atmospherejs.com/kestanous/herald-web-notifications) ([GitHub](https://github.com/Meteor-Reaction/Herald-Web-Notifications)) - Add Web Notifications to Harold
 
 #### Useful additional packages
 
