@@ -3,6 +3,7 @@ Herald.escalate = function (notification) {
   var user = Meteor.user()
   _.each(_.keys(Herald._clientRunners), function (medium) {        
     if (!notification.media[medium]) return; //only run the notifications runners
+    if (notification.media[medium].sent || !notification.media[medium].send) return;
     if (medium == 'onsite') return; //don't run onsite
     var run = true; 
     if (!Herald.userPrefrence(user, medium, notification.courier)) run = false
