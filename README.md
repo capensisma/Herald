@@ -15,8 +15,8 @@ The message data will be transmitted via all media (email, in-app-messaging, and
 
 #### Useful additional packages
 
-* [Meteor SSR](https://github.com/meteorhacks/meteor-ssr) - Templates just work on server, works with `message()`!
-
+* [meteorhacks:ssr](https://github.com/meteorhacks/meteor-ssr) - Templates just work on server, works with `message()`!
+* [artwells:queue](https://github.com/artwells/meteor-queue) -  used to queue server-side media (e.g. email)
 
 ## Basic Usage
 
