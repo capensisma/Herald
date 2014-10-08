@@ -1,7 +1,7 @@
 #Herald - Universal Notifications
 [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/Meteor-Reaction/Herald?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-A notifications pattern straight out of Telescope! 
+A notifications pattern straight out of Telescope!
 
 Herald lets you easily send messages to any number of recipients via any courier included within your app by simply supplying the courier, recipient list, and data.
 
@@ -24,7 +24,7 @@ First a simple example (also see the [example app](https://github.com/Meteor-Rea
 
 #### On Client and Sever
 
-First define your courier. In this example the courier will only send messages `onste` (in app notifications). It also provids an optional pre-formated message.
+First define your courier. In this example the courier will only send messages `onsite` (in app notifications). It also provides an optional pre-formatted message.
 
 ```js
 Herald.addCourier('newPost', {
@@ -39,7 +39,7 @@ Herald.addCourier('newPost', {
 ```
 
 #### On the Server
-You can create a new notification on the server with createNotification. 
+You can create a new notification on the server with createNotification.
 ```js
 
 params = {
@@ -97,7 +97,7 @@ notification = {
 ```
 
 You can add a `Herald.collection.deny` if you would like to be more restrictive on client updates
- 
+
  The built in permissions are:
 ```js
 Herald.collection.allow({
@@ -134,7 +134,7 @@ Call with `Herald.addCourier(name, object)`
 * name - The name of this courier, must be unique
 * object - notification parameters
   * message(string) - how to format the notification message. Can be a function, string, or an object.
-    * function: will run the function with the notification as its context (this) 
+    * function: will run the function with the notification as its context (this)
     ```js
       message = function () {return 'message ' + this }
       message() //'message [Object object]'
@@ -158,7 +158,7 @@ Call with `Herald.addCourier(name, object)`
 ### createNotification (server)
 Call with `Herald.createNotification(userId, object)`
 
-* userId - It accepts ether a user id or an array of user ids. It creates a separate notification for each user. 
+* userId - It accepts ether a user id or an array of user ids. It creates a separate notification for each user.
 * object - notification parameters
   * courier - a string referencing a courier
   * data - any data important to this specific notification, see courier metadata for general data
@@ -167,10 +167,10 @@ Call with `Herald.createNotification(userId, object)`
 
 ### markAllNotificationsAsRead (method)
   To set call of the current users notifications to read run `Meteor.call('markAllNotificationsAsRead', [callback])`
-  
+
 ### routeSeenByUser (if Package iron:router)
-  If you have iron:router added to your app you can automatically mark notifications as read based on when a user goes to specific routes. 
-  
+  If you have iron:router added to your app you can automatically mark notifications as read based on when a user goes to specific routes.
+
   Using the above `newPost` courier, lets say you set the notification `url: 'posts/[postId]'` when running `createNotification`. Assuming the route `posts/:postId`, if a user visits that route the appropriate notifications will be marked as read. This operation is currently done only on the client.
 
 ## Extension API
@@ -179,12 +179,12 @@ Call with `Herald.createNotification(userId, object)`
  Currently notification escalation is called as soon as the notification is created. The media then call their respective runners. I would like to allow package users to delay this and call later. For example, I would like to check if the user is online and if so delay sending a email for 5 minutes. The assumption being that the user will respond to the in app notification. PRs are welcome ;)
 
 ### addRunner
-Adding more media and runners is very easy, just call `Herald.addRunner(object)`. 
+Adding more media and runners is very easy, just call `Herald.addRunner(object)`.
 
 * object.name (string) - the name of the new medium
 * object.run (function) - The function context is media.yourMedium from addCourier. From here you can do things like Email.send()
 * object.check (function) - The function context is media.yourMedium from addCourier. Runs for every courier and lets you check to make sure their media.yourMedium definition is valid
-* object.where (string || array) - a string or array of strings listing the target environment, server or client. 
+* object.where (string || array) - a string or array of strings listing the target environment, server or client.
 
 ```js
 var runner = {
@@ -196,7 +196,7 @@ runner.run = function (notification, user) {
 }
 
 runner.check = function (notification, user) {
-  if (!this.example) 
+  if (!this.example)
     throw new Error('Herald-MyMedium : example must be defined for `myMedium`')
 }
 
