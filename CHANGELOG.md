@@ -1,4 +1,4 @@
-# Herald ChangeLog - as up-to-date as I can keep it.
+# Herald ChangeLog - as up-to-date possible.
 
 ## v0.9.0
   * full package refactor
