@@ -24,7 +24,7 @@ Meteor.startup(function () {
       Router.load(routeSeenByUser);
   };
 
-  var runnersQuery = [], runners = _.keys(Herald._mediaRunnersClient);
+  var runnersQuery = [], runners = _.keys(Herald._clientRunners);
   _.each(runners, function (runner) {
     var query = {};
     query['media.' + runner] = true;

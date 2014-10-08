@@ -1,13 +1,13 @@
 Package.describe({
   summary: "A Universal Notifications Engine",
-  version: "0.8.0",
+  version: "0.8.1",
   git: "https://github.com/Meteor-Reaction/Herald.git",
   name: 'kestanous:herald'
 });
 
 Package.onUse(function(api) {
   api.versionsFrom('METEOR@0.9.2');
-  api.use(['standard-app-packages']); //TODO: reduce this to the minimum requirements.
+  api.use(['standard-app-packages', 'artwells:queue@0.0.3']); //TODO: reduce this to the minimum requirements.
 
   //if iron route is present add 'seen route' logic
   api.use('iron:router@0.9.0', ['server', 'client'], {weak: true}); 
@@ -17,9 +17,9 @@ Package.onUse(function(api) {
   api.addFiles([
     'lib/$herald.js', 
     'lib/collection.js', 
-    'lib/courier.js', 
+    'lib/couriers.js', 
     'lib/runners.js', 
-    'lib/user.js'
+    'lib/users.js'
   ]);
 
   api.addFiles('client/startup.js', 'client');

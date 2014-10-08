@@ -1,5 +1,11 @@
 `Last updated: 2014-10-06`
 
+## v0.8.1
+  * full package refactor
+  * removed deprecated metadata
+  * removed alias Notifications
+  * added artwells:queue as a core dependency
+
 ## v0.8.0
   * Runners now require the where property, string or array
   * Autorun client-side runners where notifications are unread

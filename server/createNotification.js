@@ -2,7 +2,7 @@
 Herald.createNotification = function (userIds, params) {
   check(userIds, Match.OneOf([String], String)); //TODO: better Collection ID check
   check(params, Object);
-  if (!Herald._courier[params.courier])
+  if (!Herald._couriers[params.courier])
     throw new Error('Notification: courier type does not exists');
 
   // always assume multiple users.
@@ -34,7 +34,7 @@ Herald.createNotification = function (userIds, params) {
       media: {}
     };
 
-    _.each(_.keys(Herald._courier[params.courier].media), function (medium) {
+    _.each(_.keys(Herald._couriers[params.courier].media), function (medium) {
       //check if this notification should be sent to medium
       var run = true;
       if (Herald.userPrefrence) 
@@ -48,11 +48,10 @@ Herald.createNotification = function (userIds, params) {
     //create notification and return its id
     var notificationId = Herald.collection.insert(notification);
 
-    //if no pattern to delay escalation has been defined run escalation now
     //if no notificationId then insert failed anD PANIC, STOP, DON'T ACUTALLY DO THIS!
-    if (!Herald.settings.delayEscalation && notificationId) {
-      notification._id = notificationId
-      Herald.escalate(notification, user)
+    if (notificationId) {
+      notification.notificationId = notificationId
+      Herald.SetupEscalations(notification)
     }
 
     return notificationId;

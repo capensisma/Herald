@@ -5,6 +5,10 @@
       "1.0.2"
     ],
     [
+      "artwells:queue",
+      "0.0.3"
+    ],
+    [
       "autoupdate",
       "1.1.1"
     ],
@@ -115,6 +119,10 @@
     [
       "mongo",
       "1.0.6"
+    ],
+    [
+      "mongo-livedata",
+      "1.0.5"
     ],
     [
       "observe-sequence",
