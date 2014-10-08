@@ -41,7 +41,7 @@ Herald.createNotification = function (userIds, params) {
         if (!Herald.userPrefrence(user, medium, notification.courier)) run = false
       
       if (run) {
-        notification.media[medium] = true
+        notification.media[medium] = {send: true, sent: false}
       };
     });
 

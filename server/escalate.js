@@ -3,7 +3,7 @@ Meteor.startup(function () {
   //if no pattern is defined then skip this.
   // if (!Herald.settings.delayEscalation) return false;
   console.log('Starting artwells:queue for Herald');
-  Meteor.setInterval(function(){Queue.run()}, 60000); /* once a minute */
+  Meteor.setInterval(function(){Queue.run()}, Herald.settings.queueTimmer); /* once a minute */
 });
 
 
@@ -12,7 +12,7 @@ Herald.SetupEscalations = function (notification) {
   _.each(_.keys(Herald._couriers[notification.courier].media), function (medium) {
     if (!_.contains(_.keys(Herald._serverRunners), medium)) return; //Server only
     command = 'Herald.escalate("' + notification._id + '", "' + medium + '")'
-    Queue.add({command: command})
+    Queue.add({command: command, execute_after: notification.delay })
   });
   Herald.collection.update(notification._id, { $set: { escalated: true } } );
 }
@@ -31,13 +31,24 @@ Herald.escalate = function (notificationId, medium) {
   var run = true; //does the user want you to send on this medium?
   if (!Herald.userPrefrence(user, medium, notification.courier)) run = false
 
+  var thisOnRun = Herald._couriers[notification.courier].media[medium].onRun
+  if (_.isFunction(thisOnRun)) {
+    var result = thisOnRun.call(new onRun(), notification, user, run)
+    if (!result.command) throw new Error('Herald:' + medium + ' onRun did not return a command')
+    run = onRunResolve(notification, medium, result, run)
+  }
+
   if (run) {
     Herald._serverRunners[medium].call(
       Herald._couriers[notification.courier].media[medium], notification, user)
-  };
-
-  //mark the medium as don't send (ether sent or don't send)
-  var querry = {}
-  querry[ 'media.' + medium ] = false
-  Herald.collection.update(notification._id, { $set: querry } );
+    var querry = {}
+    querry[ 'media.' + medium] = {send: false, sent: true};
+    Herald.collection.update(notification._id, { $set: querry } );
+  } else {
+    var querry = {};
+    querry['media.' + medium + '.send'] =  false
+    Herald.collection.update(notification._id, { $set: querry } );
+  }
+  
+  
 };

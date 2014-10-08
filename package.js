@@ -23,7 +23,7 @@ Package.onUse(function(api) {
     'lib/onsite.js'
   ]);
 
-  api.addFiles('client/startup.js', 'client');
+  api.addFiles(['client/startup.js', 'client/escalate.js'], 'client');
 
   api.addFiles([
     'server/createNotification.js', 
