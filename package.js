@@ -1,6 +1,6 @@
 Package.describe({
   summary: "A Universal Notifications Engine",
-  version: "0.8.1",
+  version: "0.9.0",
   git: "https://github.com/Meteor-Reaction/Herald.git",
   name: 'kestanous:herald'
 });
@@ -19,7 +19,8 @@ Package.onUse(function(api) {
     'lib/collection.js', 
     'lib/couriers.js', 
     'lib/runners.js', 
-    'lib/users.js'
+    'lib/users.js',
+    'lib/onsite.js'
   ]);
 
   api.addFiles('client/startup.js', 'client');

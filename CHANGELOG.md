@@ -1,10 +1,12 @@
-`Last updated: 2014-10-06`
+# Herald ChangeLog - as up-to-date as I can keep it.
 
-## v0.8.1
+## v0.9.0
   * full package refactor
   * removed deprecated metadata
   * removed alias Notifications
   * added artwells:queue as a core dependency
+  * improved client and server escalation
+  * onsite is now a true runner
 
 ## v0.8.0
   * Runners now require the where property, string or array

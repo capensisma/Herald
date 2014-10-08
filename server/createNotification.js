@@ -50,7 +50,7 @@ Herald.createNotification = function (userIds, params) {
 
     //if no notificationId then insert failed anD PANIC, STOP, DON'T ACUTALLY DO THIS!
     if (notificationId) {
-      notification.notificationId = notificationId
+      notification._id = notificationId
       Herald.SetupEscalations(notification)
     }
 

@@ -34,22 +34,28 @@ Meteor.startup(function () {
   if (_.isEmpty(runnersQuery)) return;
   Herald.collection.find({$or: runnersQuery, read: false}).observe({
     added: function (notification) {
-      console.log(notification)
-      console.log('post', notification)
+      var media = notification.media //send status
+
       var user = Meteor.user()
       _.each(runners, function (medium) {
+        if (!media[medium]) return; //sent or don't send
         var run = true;
         if (Herald.userPrefrence) 
           if (!Herald.userPrefrence(user, medium, notification.courier)) run = false
 
         if (run) {
-          Herald._mediaRunnersClient[medium].call(
-            Herald._courier[notification.courier].media[medium], notification, user)
+          Herald._clientRunners[medium].call(
+            Herald._couriers[notification.courier].media[medium], notification, user)
         };
+
+        //mark medium as sent or don't send (onsite being the sole exception)
+        if (medium != 'onsite') {
+          media[medium] = false
+        }
       });
 
-      //remove all client-side runners
-      Herald.collection.update(notification._id, {$set: { media: _.omit(notification.media, runners) } });
+      //update sent or don't send
+      Herald.collection.update(notification._id, {$set: { media: media } });
     }
   });
 });
