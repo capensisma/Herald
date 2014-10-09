@@ -1001,6 +1001,7 @@ body .markdown-body
 }
 </style><title>README</title></head><body><article class="markdown-body"><h1 id="herald-universal-notifications"><a name="user-content-herald-universal-notifications" href="#herald-universal-notifications" class="headeranchor-link"  aria-hidden="true"><span class="headeranchor"></span></a>Herald - Universal Notifications</h1>
 <p><a href="https://gitter.im/Meteor-Reaction/Herald?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img alt="Gitter" src="https://badges.gitter.im/Join" title="Chat.svg" /></a></p>
+<h6 id="this-readme-is-for-v100-pre1"><a name="user-content-this-readme-is-for-v100-pre1" href="#this-readme-is-for-v100-pre1" class="headeranchor-link"  aria-hidden="true"><span class="headeranchor"></span></a>This readme is for v1.0.0-pre1!</h6>
 <p>A notifications pattern straight out of Telescope!</p>
 <p>Herald lets you easily send messages to any number of recipients via any courier included within your app by simply supplying the courier, recipient list, and data.</p>
 <p>The message data will be transmitted via all media (email, in-app-messaging, and/or other) common to both the courier and each recipient&rsquo;s preferences. Additionally, the courier will properly format each message&rsquo;s data appropriate to the media being utilized. (user preferences not yet officially supported)</p>
@@ -1017,20 +1018,22 @@ body .markdown-body
 <h2 id="basic-usage"><a name="user-content-basic-usage" href="#basic-usage" class="headeranchor-link"  aria-hidden="true"><span class="headeranchor"></span></a>Basic Usage</h2>
 <p>First a simple example (also see the <a href="https://github.com/Meteor-Reaction/Herald-Example">example app</a>)</p>
 <h4 id="on-client-and-sever"><a name="user-content-on-client-and-sever" href="#on-client-and-sever" class="headeranchor-link"  aria-hidden="true"><span class="headeranchor"></span></a>On Client and Sever</h4>
-<p>First define your courier. In this example the courier will only send messages <code>onsite</code> (in app notifications). It also provides an optional pre-formatted message.</p>
+<p>First define your courier. Don&rsquo;t worry to much about this when you getting started. Couriers are a lot like classes. You can add quite a lot of complex logic to them or keep them very simple and generic. In this example the courier will only send messages <code>onsite</code> (in app notifications). <code>onsite</code> does not take any optional arguments we can just pass it an empty object. It also provides an optional pre-formatted message. </p>
 <pre><code class="js">Herald.addCourier('newPost', {
   media: {
     onsite: {} //Send notifications to client, with no custom configuration
   },
 
-  //will be a function on the collection instance, returned from find()/findOne()
-  message: function () { return 'There is a new post: &quot;' + this.post.name + '&quot;'; }
+  //will be a function on the collection instance, returned from find()
+  message: function () { 
+    return 'There is a new post: &quot;' + this.data.post.name + '&quot;'; 
+  }
 });
 
 </code></pre>
 
 <h4 id="on-the-server"><a name="user-content-on-the-server" href="#on-the-server" class="headeranchor-link"  aria-hidden="true"><span class="headeranchor"></span></a>On the Server</h4>
-<p>You can create a new notification on the server with createNotification.</p>
+<p>You can create a new notification on the server with createNotification. This is what actually creates the notification. It calls on the courier <code>newPost</code> to figure out what metadata it needs. When it&rsquo;s saved in the database, the courier will be sure to deliver it via the appropriate media. In this case <code>onsite</code>, so it will be sent to the client for in app display. </p>
 <pre><code class="js">
 params = {
   courier: 'newPost', //required
@@ -1055,7 +1058,9 @@ Herald.createNotification(userId, params)
 &lt;/template&gt;
 </code></pre>
 
-<pre><code class="js">Template.notifications.notifications = Herald.collection.find({read: false});
+<p>There can be other types of notifications on the client and you may not want to display them. It&rsquo;s best practices to always define the notifications you wish to display as <code>onsite</code>. We can easily get the appropriate notifications with <code>Herald.getNotification</code>. By default herald only publishes notifications, to the client, that have not been read.</p>
+<pre><code class="js">Template.notifications.notifications = Herald.getNotifications({medium: 'onsite'});
+
 Template.notifications.events({
   'click .item': function (event, template) {
     Herald.collection.update(this._id, {$set: {read: true} });
@@ -1064,21 +1069,35 @@ Template.notifications.events({
 </code></pre>
 
 <h2 id="overview"><a name="user-content-overview" href="#overview" class="headeranchor-link"  aria-hidden="true"><span class="headeranchor"></span></a>Overview</h2>
+<h4 id="media-medium"><a name="user-content-media-medium" href="#media-medium" class="headeranchor-link"  aria-hidden="true"><span class="headeranchor"></span></a>Media (medium)</h4>
+<p>In this package media refers to the many types formats that you can use transmit messages. Most common examples would be in-app-notifications and Emails. In the future I hope to expand this list to include things like push notifications and text messages. For reference, media is plural for medium.</p>
+<h4 id="couriers"><a name="user-content-couriers" href="#couriers" class="headeranchor-link"  aria-hidden="true"><span class="headeranchor"></span></a>Couriers</h4>
+<p>Couriers do all the heavy lifting and manage delivery of all the notifications. By default the Couriers have <code>onsite</code>, which insures the notification is delivered to the client browser. When you add extension packages they will also manage your other forms of media.</p>
+<p>Your courier must have a name, that you reference when creating and finding notifications. You also must have at least one medium. Without an extension package the only medium is <code>onsite</code>.</p>
+<p>Couriers can also add static properties and functions to notifications via the transform property. This is applied directly to the notification via the <code>Meteor.Collection</code> transform.</p>
+<p>Lastly Couriers have an <code>onRun</code> function that gives you fine control over when and where the notifications are delivered. This is for advanced usage only.</p>
+<h4 id="runners"><a name="user-content-runners" href="#runners" class="headeranchor-link"  aria-hidden="true"><span class="headeranchor"></span></a>Runners</h4>
+<p>Behind the scenes couriers call runners. There is one runner per medium. Normal usage of this package will not require you manage the runners but package developers should review the Extension API.</p>
 <h4 id="meteor-collection-notifications"><a name="user-content-meteor-collection-notifications" href="#meteor-collection-notifications" class="headeranchor-link"  aria-hidden="true"><span class="headeranchor"></span></a>Meteor Collection &lsquo;notifications&rsquo;</h4>
-<p><code>Herald.collection</code> is your notification Meteor Collection. Feel free to use this as you would with any Collection. The only limit is inserts. Client side inserts are denied and you should call <code>Herald.createNotification(userId, params)</code> on the server.</p>
+<p><code>Herald.collection</code> is your notification Meteor Collection. While <code>Herald.getNotifications</code> is the easiest to use, feel free to use this as you would with any Collection. The only limit is inserts. Client side inserts are denied and you should call <code>Herald.createNotification(userId, params)</code> on the server. </p>
 <pre><code class="js">notification = {
+  //required
   userId //the userId associated with this notification.
   courier //the notification courier. (explained later)
-  read //if the notification has been read.
-  escalated //if the notification has been escalated.
-  timestamp //when the notification was created.
-  url //the associated url, if any. (explained later)
+
+  //optional
   data //anything you need, useful in combo with notification.message().
+  url //the associated url, if any. (explained later)
+
+  //auto-generated &amp; possibly auto-updated
+  read //if the notification has been read.
+  timestamp //when the notification was created.
+  escalated //if the notification has been escalated.
+  media //send &amp; sent status for each medium
 }
 </code></pre>
 
-<p>You can add a <code>Herald.collection.deny</code> if you would like to be more restrictive on client updates</p>
-<p>The built in permissions are:</p>
+<p>You can add a <code>Herald.collection.deny</code> if you would like to be more restrictive on client updates. The built in permissions are:</p>
 <pre><code class="js">Herald.collection.allow({
   insert: function (userId, doc) { return false; },
   update: function (userId, doc) { return userId == doc.userId },
@@ -1086,42 +1105,38 @@ Template.notifications.events({
 });
 </code></pre>
 
-<p>There is an built in pub/sub &lsquo;notifications&rsquo; that sends notifications down to the client based on the cursor: <code>Herald.collection.find({userId:this.userId, onsite: true});</code></p>
-<p>Currently this package does <strong>not</strong> delete any notifications! You will likely want to do that yourself. I would recommend an observe function on the server removes notifications when they are read.</p>
-<h4 id="media"><a name="user-content-media" href="#media" class="headeranchor-link"  aria-hidden="true"><span class="headeranchor"></span></a>Media</h4>
-<p>In this package media refers to the many types of mediums that you can use transmit messages. Most common examples would be in-app-notifications and Emails. In the future I hope to expand this list to include things like push notifications and text messages.</p>
-<h4 id="couriers"><a name="user-content-couriers" href="#couriers" class="headeranchor-link"  aria-hidden="true"><span class="headeranchor"></span></a>Couriers</h4>
-<p>Couriers do all the heavy lifting and manage delivery of all the notifications. By default the Couriers insures the notification is delivered to the client browser. When you add extension packages they will also manage your other forms of media.</p>
-<p>Your courier must have a name and media (at least one medium). Without an extension package the only medium is <code>onsite</code></p>
-<h4 id="runners"><a name="user-content-runners" href="#runners" class="headeranchor-link"  aria-hidden="true"><span class="headeranchor"></span></a>Runners</h4>
-<p>Behind the scenes couriers call runners. With the exception of <code>onsite</code>, there is one runner per medium. Normal usage of this package will not require you manage the runners but package developers should review the Extension API.</p>
+<p>There is a built in pub/sub(&lsquo;notifications&rsquo;) that sends notifications down to the client. It sends down all the client-side notifications that have not been read, have not been sent, and should be sent. (<code>onsite</code> is always marked as should send and has not been sent)</p>
+<h4 id="cleanup"><a name="user-content-cleanup" href="#cleanup" class="headeranchor-link"  aria-hidden="true"><span class="headeranchor"></span></a>Cleanup</h4>
+<p>Currently this package does <strong>not</strong> delete any notifications! You will likely want to do that yourself. I would recommend an observe function on the server to removes notifications when they are read.</p>
 <h2 id="general-api"><a name="user-content-general-api" href="#general-api" class="headeranchor-link"  aria-hidden="true"><span class="headeranchor"></span></a>General API</h2>
 <h3 id="addcourier-both"><a name="user-content-addcourier-both" href="#addcourier-both" class="headeranchor-link"  aria-hidden="true"><span class="headeranchor"></span></a>addCourier (both)</h3>
 <p>Call with <code>Herald.addCourier(name, object)</code></p>
-<ul>
-<li>name - The name of this courier, must be unique</li>
-<li>object - notification parameters</li>
-<li>message(string) - how to format the notification message. Can be a function, string, or an object.<ul>
-<li>function: will run the function with the notification as its context (this)<br />
+<p>object parameters</p>
+<h5 id="name-string"><a name="user-content-name-string" href="#name-string" class="headeranchor-link"  aria-hidden="true"><span class="headeranchor"></span></a>name (string)</h5>
+<p>The name of this courier, must be unique</p>
+<h5 id="messagestring"><a name="user-content-messagestring" href="#messagestring" class="headeranchor-link"  aria-hidden="true"><span class="headeranchor"></span></a>message(string)</h5>
+<p>How to format the notification message. Can be a function, string, or an object.<br />
+  * function </p>
+<p>will run the function with the notification as its context (this)<br />
 <code>js
-  message = function () {return 'message ' + this }
-  message() //'message [Object object]'</code></li>
-<li>string: will return a Template with the given name. It will have the notification as its data context.<br />
+    message = function () {return 'message ' + this }
+    message() //'message [Object object]'</code><br />
+  * string </p>
+<p>will return a Template with the given name. It will have the notification as its data context.<br />
 <code>js
   message = 'example'
-  message() //template 'example'</code></li>
-<li>object: can allow for more then one message, the property called will be based on the given string. Running message(string) without an argument will call object.default.<br />
+  message() //template 'example'</code><br />
+  * object</p>
+<p>can allow for more then one message, the property called will be based on the given string. Running message(string) without an argument will call object.default.<br />
 <code>js
-  message = object: {
-    default: 'example',
-    fn: function () {return 'message' }
-  }
-  message() //template 'example'
-  message('fn') //message</code></li>
-</ul>
-</li>
-<li>transform - any <strong>static</strong> data or functions you want added to the notification instance via collection transform</li>
-</ul>
+    message = object: {
+      default: 'example',
+      fn: function () {return 'message' }
+    }
+    message() //template 'example'
+    message('fn') //message</code></p>
+<h5 id="transform"><a name="user-content-transform" href="#transform" class="headeranchor-link"  aria-hidden="true"><span class="headeranchor"></span></a>transform</h5>
+<p>Any <strong>static</strong> data or functions you want added to the notification instance via collection transform</p>
 <h3 id="createnotification-server"><a name="user-content-createnotification-server" href="#createnotification-server" class="headeranchor-link"  aria-hidden="true"><span class="headeranchor"></span></a>createNotification (server)</h3>
 <p>Call with <code>Herald.createNotification(userId, object)</code></p>
 <ul>
@@ -1131,8 +1146,8 @@ Template.notifications.events({
 <li>data - any data important to this specific notification, see courier metadata for general data</li>
 <li>url - if you are using iron:router see <code>routeSeenByUser</code></li>
 </ul>
-<h3 id="markallnotificationsasread-method"><a name="user-content-markallnotificationsasread-method" href="#markallnotificationsasread-method" class="headeranchor-link"  aria-hidden="true"><span class="headeranchor"></span></a>markAllNotificationsAsRead (method)</h3>
-<p>To set call of the current users notifications to read run <code>Meteor.call('markAllNotificationsAsRead', [callback])</code></p>
+<h3 id="markallasread-method"><a name="user-content-markallasread-method" href="#markallasread-method" class="headeranchor-link"  aria-hidden="true"><span class="headeranchor"></span></a>markAllAsRead (method)</h3>
+<p>To set call of the current user&rsquo;s notifications to read run <code>Meteor.call('heraldMarkAllAsRead', [callback])</code></p>
 <h3 id="routeseenbyuser-if-package-ironrouter"><a name="user-content-routeseenbyuser-if-package-ironrouter" href="#routeseenbyuser-if-package-ironrouter" class="headeranchor-link"  aria-hidden="true"><span class="headeranchor"></span></a>routeSeenByUser (if Package iron:router)</h3>
 <p>If you have iron:router added to your app you can automatically mark notifications as read based on when a user goes to specific routes.</p>
 <p>Using the above <code>newPost</code> courier, lets say you set the notification <code>url: 'posts/[postId]'</code> when running <code>createNotification</code>. Assuming the route <code>posts/:postId</code>, if a user visits that route the appropriate notifications will be marked as read. This operation is currently done only on the client.</p>

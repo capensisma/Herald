@@ -74,8 +74,7 @@ Currently there is no prebuilt templates, but creating your own is easy
 There can be other types of notifications on the client and you may not want to display them. It's best practices to always define the notifications you wish to display as `onsite`. We can easily get the appropriate notifications with `Herald.getNotification`. By default herald only publishes notifications, to the client, that have not been read.
 
 ```js
-Template.notifications.notifications = 
-  Herald.getNotifications({medium: 'onsite'});
+Template.notifications.notifications = Herald.getNotifications({medium: 'onsite'});
 
 Template.notifications.events({
   'click .item': function (event, template) {
@@ -141,36 +140,54 @@ Herald.collection.allow({
 There is a built in pub/sub('notifications') that sends notifications down to the client. It sends down all the client-side notifications that have not been read, have not been sent, and should be sent. (`onsite` is always marked as should send and has not been sent)
 
 #### Cleanup
-Currently this package does **not** delete any notifications! You will likely want to do that yourself. I would recommend an observe function on the server removes notifications when they are read.
+Currently this package does **not** delete any notifications! You will likely want to do that yourself. I would recommend an observe function on the server to removes notifications when they are read.
 
 ## General API
 
 ### addCourier (both)
-Call with `Herald.addCourier(name, object)`
+Call with `Herald.addCourier(name, options)`
 
-* name - The name of this courier, must be unique
-* object - notification parameters
-  * message(string) - how to format the notification message. Can be a function, string, or an object.
-    * function: will run the function with the notification as its context (this)
-    ```js
-      message = function () {return 'message ' + this }
-      message() //'message [Object object]'
-    ```
-    * string: will return a Template with the given name. It will have the notification as its data context.
-    ```js
-      message = 'example'
-      message() //template 'example'
-    ```
-    * object: can allow for more then one message, the property called will be based on the given string. Running message(string) without an argument will call object.default.
-    ```js
-      message = object: {
-        default: 'example',
-        fn: function () {return 'message' }
-      }
-      message() //template 'example'
-      message('fn') //message
-    ```
-  * transform - any **static** data or functions you want added to the notification instance via collection transform
+##### name (string) [required]
+  The name of this courier, must be unique
+
+##### media (object) [required]
+
+##### message(string) 
+
+  How to format the notification message. Can be a function, string, or an object.
+ 
+  * function 
+  
+  will run the function with the notification as its context (this)
+  ```js
+    message = function () {return 'message ' + this }
+    message() //'message [Object object]'
+  ```
+  * string 
+  
+  will return a Template with the given name. It will have the notification as its data context.
+  ```js
+  message = 'example'
+  message() //template 'example'
+  ```
+  * object
+  
+  can allow for more then one message, the property called will be based on the given string. Running message(string) without an argument will call object.default.
+  ```js
+    message = object: {
+      default: 'example',
+      fn: function () {return 'message' }
+    }
+    message() //template 'example'
+    message('fn') //message
+  ```
+
+##### transform 
+  Any **static** data or functions you want added to the notification instance via collection transform
+
+##### onRun (function) [advanced usage only]
+
+
 
 ### createNotification (server)
 Call with `Herald.createNotification(userId, object)`
@@ -181,14 +198,25 @@ Call with `Herald.createNotification(userId, object)`
   * data - any data important to this specific notification, see courier metadata for general data
   * url - if you are using iron:router see `routeSeenByUser`
 
+### getNotification (both)
 
-### markAllNotificationsAsRead (method)
-  To set call of the current users notifications to read run `Meteor.call('markAllNotificationsAsRead', [callback])`
+### markAllAsRead (method)
+  To set call of the current user's notifications to read run `Meteor.call('heraldMarkAllAsRead', [callback])`
 
 ### routeSeenByUser (if Package iron:router)
   If you have iron:router added to your app you can automatically mark notifications as read based on when a user goes to specific routes.
 
   Using the above `newPost` courier, lets say you set the notification `url: 'posts/[postId]'` when running `createNotification`. Assuming the route `posts/:postId`, if a user visits that route the appropriate notifications will be marked as read. This operation is currently done only on the client.
+
+## User Preferences API
+
+### userPrefrence
+
+### getUserPrefrence
+
+### setUserMediaPreference
+
+### setUserCourierPreference
 
 ## Extension API
 
