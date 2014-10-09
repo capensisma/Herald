@@ -24,7 +24,7 @@ First a simple example (also see the [example app](https://github.com/Meteor-Rea
 
 #### On Client and Sever
 
-First define your courier. Don't worry to much about this when you getting started. Couriers are a lot like classes. You can add quite a lot of complex logic to them or keep them very simple and generic. In this example the courier will only send messages `onsite` (in app notifications). It also provides an optional pre-formatted message.
+First define your courier. Don't worry to much about this when you getting started. Couriers are a lot like classes. You can add quite a lot of complex logic to them or keep them very simple and generic. In this example the courier will only send messages `onsite` (in app notifications). `onsite` does not take any optional arguments we can just pass it an empty object. It also provides an optional pre-formatted message. 
 
 ```js
 Herald.addCourier('newPost', {
@@ -32,14 +32,16 @@ Herald.addCourier('newPost', {
     onsite: {} //Send notifications to client, with no custom configuration
   },
 
-  //will be a function on the collection instance, returned from find()/findOne()
-  message: function () { return 'There is a new post: "' + this.data.post.name + '"'; }
+  //will be a function on the collection instance, returned from find()
+  message: function () { 
+    return 'There is a new post: "' + this.data.post.name + '"'; 
+  }
 });
 
 ```
 
 #### On the Server
-You can create a new notification on the server with createNotification. This is what actually creates the notification. It calls on the courier newPost to figure out what metadata you it needs. When its saved in the database the courier will be sure to deliver it via the appropriate media. In this case onsite, so it will be sent to the client for in app display.
+You can create a new notification on the server with createNotification. This is what actually creates the notification. It calls on the courier `newPost` to figure out what metadata it needs. When it's saved in the database, the courier will be sure to deliver it via the appropriate media. In this case `onsite`, so it will be sent to the client for in app display. 
 
 ```js
 
@@ -68,8 +70,12 @@ Currently there is no prebuilt templates, but creating your own is easy
 </template>
 ```
 
+There can be other types of notifications on the client and you may not want to display them. It's best practices to always define the notifications you wish to display as `onsite`. We can easily get the appropriate notifications with `Herald.getNotification`. By default herald only publishes notifications, to the client, that have not been read.
+
 ```js
-Template.notifications.notifications = Herald.collection.find({read: false});
+Template.notifications.notifications = 
+  Herald.getNotifications({medium: 'onsite'});
+
 Template.notifications.events({
   'click .item': function (event, template) {
     Herald.collection.update(this._id, {$set: {read: true} });
