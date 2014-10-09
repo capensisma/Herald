@@ -1,12 +1,13 @@
 #Herald - Universal Notifications
 [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/Meteor-Reaction/Herald?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
+###### This readme is for v1.0.0-pre1! 
+
 A notifications pattern straight out of Telescope!
 
 Herald lets you easily send messages to any number of recipients via any courier included within your app by simply supplying the courier, recipient list, and data.
 
 The message data will be transmitted via all media (email, in-app-messaging, and/or other) common to both the courier and each recipient's preferences. Additionally, the courier will properly format each message's data appropriate to the media being utilized. (user preferences not yet officially supported)
-
 
 #### The current extension packages
 
@@ -87,25 +88,49 @@ Template.notifications.events({
 ##Overview
 
 
+#### Media (medium)
+
+In this package media refers to the many types formats that you can use transmit messages. Most common examples would be in-app-notifications and Emails. In the future I hope to expand this list to include things like push notifications and text messages. For reference, media is plural for medium.
+
+#### Couriers
+
+Couriers do all the heavy lifting and manage delivery of all the notifications. By default the Couriers have `onsite`, which insures the notification is delivered to the client browser. When you add extension packages they will also manage your other forms of media.
+
+Your courier must have a name, that you reference when creating and finding notifications. You also must have at least one medium. Without an extension package the only medium is `onsite`.
+
+Couriers can also add static properties and functions to notifications via the transform property. This is applied directly to the notification via the `Meteor.Collection` transform.
+
+Lastly Couriers have an `onRun` function that gives you fine control over when and where the notifications are delivered. This is for advanced usage only.
+
+#### Runners
+
+Behind the scenes couriers call runners. There is one runner per medium. Normal usage of this package will not require you manage the runners but package developers should review the Extension API.
+
 #### Meteor Collection 'notifications'
 
-`Herald.collection` is your notification Meteor Collection. Feel free to use this as you would with any Collection. The only limit is inserts. Client side inserts are denied and you should call `Herald.createNotification(userId, params)` on the server.
+`Herald.collection` is your notification Meteor Collection. While `Herald.getNotifications` is the easiest to use, feel free to use this as you would with any Collection. The only limit is inserts. Client side inserts are denied and you should call `Herald.createNotification(userId, params)` on the server. 
+
 
 ```js
 notification = {
+  //required
   userId //the userId associated with this notification.
   courier //the notification courier. (explained later)
-  read //if the notification has been read.
-  escalated //if the notification has been escalated.
-  timestamp //when the notification was created.
-  url //the associated url, if any. (explained later)
+
+  //optional
   data //anything you need, useful in combo with notification.message().
+  url //the associated url, if any. (explained later)
+
+  //auto-generated & possibly auto-updated
+  read //if the notification has been read.
+  timestamp //when the notification was created.
+  escalated //if the notification has been escalated.
+  media //send & sent status for each medium
 }
 ```
 
-You can add a `Herald.collection.deny` if you would like to be more restrictive on client updates
+You can add a `Herald.collection.deny` if you would like to be more restrictive on client updates. The built in permissions are:
 
- The built in permissions are:
 ```js
 Herald.collection.allow({
   insert: function (userId, doc) { return false; },
@@ -113,25 +138,10 @@ Herald.collection.allow({
   remove: function (userId, doc) { return userId == doc.userId }
 });
 ```
-There is an built in pub/sub 'notifications' that sends notifications down to the client based on the cursor: `Herald.collection.find({userId:this.userId, onsite: true});`
+There is a built in pub/sub('notifications') that sends notifications down to the client. It sends down all the client-side notifications that have not been read, have not been sent, and should be sent. (`onsite` is always marked as should send and has not been sent)
 
+#### Cleanup
 Currently this package does **not** delete any notifications! You will likely want to do that yourself. I would recommend an observe function on the server removes notifications when they are read.
-
-#### Media
-
-In this package media refers to the many types of mediums that you can use transmit messages. Most common examples would be in-app-notifications and Emails. In the future I hope to expand this list to include things like push notifications and text messages.
-
-#### Couriers
-
-Couriers do all the heavy lifting and manage delivery of all the notifications. By default the Couriers insures the notification is delivered to the client browser. When you add extension packages they will also manage your other forms of media.
-
-Your courier must have a name and media (at least one medium). Without an extension package the only medium is `onsite`
-
-
-#### Runners
-
-Behind the scenes couriers call runners. With the exception of `onsite`, there is one runner per medium. Normal usage of this package will not require you manage the runners but package developers should review the Extension API.
-
 
 ## General API
 
