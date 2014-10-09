@@ -43,13 +43,13 @@ Herald.escalate = function (notificationId, medium) {
   if (run) {
     Herald._serverRunners[medium].call(
       Herald._couriers[notification.courier].media[medium], notification, user)
-    var querry = {}
-    querry[ 'media.' + medium] = {send: false, sent: true};
-    Herald.collection.update(notification._id, { $set: querry } );
+    var query = {}
+    query[ 'media.' + medium] = {send: false, sent: true};
+    Herald.collection.update(notification._id, { $set: query } );
   } else {
-    var querry = {};
-    querry['media.' + medium + '.send'] =  false
-    Herald.collection.update(notification._id, { $set: querry } );
+    var query = {};
+    query['media.' + medium + '.send'] =  false
+    Herald.collection.update(notification._id, { $set: query } );
   }
   
   

@@ -256,23 +256,69 @@ media: {
 
 
 ### createNotification (server)
-Call with `Herald.createNotification(userId, object)`
 
-* userId - It accepts ether a user id or an array of user ids. It creates a separate notification for each user.
-* object - notification parameters
-  * courier - a string referencing a courier
-  * data - any data important to this specific notification, see courier metadata for general data
-  * url - if you are using iron:router see `routeSeenByUser`
+You should create all your notifications with `Herald.createNotification`. This function create notifications gives them to the courier to manage. Note that this can only be done on the server.
+
+```js
+//Herald.createNotification(userId, object)
+Herald.createNotification(userId, {
+  courier: String,
+  data: Object,
+  url: String
+})
+```
+
+##### userId 
+
+This can be ether a user id or an array of user ids. A separate notification will be created for each user.
+
+##### courier 
+  
+A string name referencing a courier.
+
+##### data (object)
+
+Any data important to this specific notification. This is usually things like a collection _id and and other fields. It must be in object form but there are no other limitations. This will be saved in the database so try to be sparse where possible. You can use the courier transform to save static data.
+
+##### url (sting)
+
+This is optional but is used by a number of tools. For example, if you are using iron:router it can automatically mark the notification as read. See [routeSeenByUser](#routeseenbyuser-if-package-ironrouter).
 
 ### getNotification (both)
 
-### markAllAsRead (method)
+`Herald.getNotifications(query, options)` is a light wrapper around Meteor.Collection.find(). You can pass an object query and [collection find options](http://docs.meteor.com/#find) and it returns a courser.
+
+The query can have any of the following: 
+```js
+{
+  user: _id, //required
+  courier: 'name', 
+  medium: 'medium name', 
+  read = boolean //default true
+}
+```
+This will always scope the search to a user id and read state. If you need more control then you can use `Herald.collection.find()`
+
+### heraldMarkAllAsRead (method)
   To set call of the current user's notifications to read run `Meteor.call('heraldMarkAllAsRead')`
 
 ### routeSeenByUser (if Package iron:router)
   If you have iron:router added to your app you can automatically mark notifications as read based on when a user goes to specific routes.
 
-  Using the above `newPost` courier, lets say you set the notification `url: 'posts/[postId]'` when running `createNotification`. Assuming the route `posts/:postId`, if a user visits that route the appropriate notifications will be marked as read. This operation is currently done only on the client.
+  Using the [above 'newPost' courier](#basic-usage), lets say you set the notification `url: 'posts/[postId]'` when running `createNotification`. Assuming the route `posts/:postId`, if a user visits that route the appropriate notifications will be marked as read. 
+
+  A useful trick is to add a url function to the courier transform:
+  ```js
+  {
+    transform: {
+      url: function () {
+        return 'posts/' + this.data.post._id
+      }
+    }
+  }
+  ```
+
+  The read url operation is currently done only on the client.
 
 ## User Preferences API
 
