@@ -24,6 +24,7 @@ Herald.escalate = function (notificationId, medium) {
   if (!notification) return; //notification has been removed
   if (notification.read) return; //don't escalate a read notification!
   if (!notification.media[medium].send || notification.media[medium].sent) return; //already sent/don't send
+  if (Herald.settings.overrides[medium]) return; //disabled by override
 
   var user = Meteor.users.findOne(notification.userId)
   if (!user) return; //user has been removed

@@ -1,5 +1,13 @@
 # Herald ChangeLog - up-to-date as possible.
 
+## v1.0.0-pre1
+  * added getNotifications as a convenience function
+  * added heraldMarkAllAsRead as a convenience method
+  * added setUserMediaPreference for general media user preferences
+  * added setUserCourierPreference for general courier-media user preferences
+  * added getUserPrefrence for fetching specific user preferences
+  * none of the above has been tested as of this pre-version
+
 ## v0.10.0
   * onRun added to couriers
   * fallback setting added to couriers - disables autorun but allowas for onRun.transfer
