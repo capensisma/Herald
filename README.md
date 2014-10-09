@@ -15,8 +15,8 @@ The message data will be transmitted via all media (email, in-app-messaging, and
 
 #### Useful additional packages
 
-* [meteorhacks:ssr](https://github.com/meteorhacks/meteor-ssr) - Templates just work on server, works with `message()`!
-* [artwells:queue](https://github.com/artwells/meteor-queue) -  used to queue server-side media (e.g. email)
+* [meteorhacks:ssr](https://atmospherejs.com/meteorhacks/ssr) ([GitHub](https://github.com/meteorhacks/meteor-ssr)) - Templates just work on server, works with `message()`!
+* [artwells:queue](https://atmospherejs.com/artwells/queue) ([GitHub](https://github.com/artwells/meteor-queue)) -  used to queue server-side media (e.g. email)
 
 ## Basic Usage
 
@@ -24,7 +24,7 @@ First a simple example (also see the [example app](https://github.com/Meteor-Rea
 
 #### On Client and Sever
 
-First define your courier. In this example the courier will only send messages `onsite` (in app notifications). It also provides an optional pre-formatted message.
+First define your courier. Don't worry to much about this when you getting started. Couriers are a lot like classes. You can add quite a lot of complex logic to them or keep them very simple and generic. In this example the courier will only send messages `onsite` (in app notifications). It also provides an optional pre-formatted message.
 
 ```js
 Herald.addCourier('newPost', {
@@ -39,7 +39,8 @@ Herald.addCourier('newPost', {
 ```
 
 #### On the Server
-You can create a new notification on the server with createNotification.
+You can create a new notification on the server with createNotification. This is what actually creates the notification. It calls on the courier newPost to figure out what metadata you it needs. When its saved in the database the courier will be sure to deliver it via the appropriate media. In this case onsite, so it will be sent to the client for in app display.
+
 ```js
 
 params = {
