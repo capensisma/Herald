@@ -145,48 +145,114 @@ Currently this package does **not** delete any notifications! You will likely wa
 ## General API
 
 ### addCourier (both)
-Call with `Herald.addCourier(name, options)`
+
+You should define your courier on both the server and the client. The following is an example of a courier with all the available options. The only required ones are the name and the media. 
+
+```js
+
+//Herald.addCourier(name, object)
+
+Herald.addCourier(name, {
+  media: { 
+    medium: {} 
+  },
+  message: function () { return String }, 
+  transform: {}
+});
+
+```
 
 ##### name (string) [required]
-  The name of this courier, must be unique
+  
+The name of this courier, must be unique. This should be descriptive of how you want to use this courier. If is a general courier for `onsite` notifications you could call it `inAppCourier`. However its more likely that you will want to have custom messages and transform functions. For example if you are notifying users of comments on a blog you may want to call it `newComment`.
 
 ##### media (object) [required]
 
-##### message(string) 
+This object should list each medium you wish to use along with any medium specific configurations. `onsite` does not have any configurations so you can just pass it an empty object. Each extension package will detail what kind of configurations you can use. Here is an example with `onsite` and `webNotifications`:
 
-  How to format the notification message. Can be a function, string, or an object.
+```js
+media: {
+  onsite: {},
+  webNotifications: {
+    title: 'hello from the web',
+    body: function () {
+      return this.message();
+    }
+  }
+}
+```
+###### A note on onRun and fallback
+
+In addition to configuration you can also add `onRun` and `fallback` to your medium objects. For more details see the [onRun](#onrun-advanced-usage-only) section.
+
+```js
+//not a functional example, simplified for readability
+media: {
+  webNotifications: {
+    onRun: function () {
+      if (userIsOfline)
+        return this.transfer('email');
+      else
+        return this.run()
+    }
+  },
+  email: {
+    fallback: true
+  }
+}
+```
+
+##### message ( function || string || object) 
+
+  The courier also comes with an optional message tool. This will be available on the notification instance. You can pass a function, string, or an object. For a simple use cases you will likely just use the function option.
  
   * function 
   
-  will run the function with the notification as its context (this)
+  The function will run with the notification instance as its context (this)
+
   ```js
-    message = function () {return 'message ' + this }
-    message() //'message [Object object]'
+  {
+    message: function () {return 'post: ' + this.data.post.name }
+  {
+
+  instance.message() //'post: postName'
   ```
   * string 
   
-  will return a Template with the given name. It will have the notification as its data context.
+  A string be read as a Template name. Herald will return a live Blaze view when you call the message. It will have the notification as its data context.
+
   ```js
-  message = 'example'
-  message() //template 'example'
+  {
+    message: 'example'
+  }
+  instance.message() //the template 'example'
   ```
   * object
   
-  can allow for more then one message, the property called will be based on the given string. Running message(string) without an argument will call object.default.
+  You can usage an object to allow for more then one message. The property called will be based on the message function argument string. Running message() without an argument will call object.default.
   ```js
-    message = object: {
+  {
+    message: object: {
       default: 'example',
       fn: function () {return 'message' }
     }
-    message() //template 'example'
-    message('fn') //message
+  }
+  instance.message() //template 'example'
+  instance.message('fn') //message
   ```
 
 ##### transform 
-  Any **static** data or functions you want added to the notification instance via collection transform
-
-##### onRun (function) [advanced usage only]
-
+  Any **static** data or functions you want added to the notification instance via collection transform. Much like the message function option each function will be called with the notification as its `this` context. 
+  ```js
+  {
+    transform: {
+      name: function () {
+        return this.courier;
+      }
+    }
+  }
+  instance.name() // 'courierName'
+  ```
 
 
 ### createNotification (server)
@@ -201,7 +267,7 @@ Call with `Herald.createNotification(userId, object)`
 ### getNotification (both)
 
 ### markAllAsRead (method)
-  To set call of the current user's notifications to read run `Meteor.call('heraldMarkAllAsRead', [callback])`
+  To set call of the current user's notifications to read run `Meteor.call('heraldMarkAllAsRead')`
 
 ### routeSeenByUser (if Package iron:router)
   If you have iron:router added to your app you can automatically mark notifications as read based on when a user goes to specific routes.
@@ -217,6 +283,11 @@ Call with `Herald.createNotification(userId, object)`
 ### setUserMediaPreference
 
 ### setUserCourierPreference
+
+## Herald settings and artwells:queue
+
+## onRun [advanced usage only]
+medium.onRun (function) 
 
 ## Extension API
 
