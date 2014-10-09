@@ -11,8 +11,9 @@ Herald.SetupEscalations = function (notification) {
   if (notification.escalated) return false; //don't resend notifications
   _.each(_.keys(Herald._couriers[notification.courier].media), function (medium) {
     if (!_.contains(_.keys(Herald._serverRunners), medium)) return; //Server only
-    command = 'Herald.escalate("' + notification._id + '", "' + medium + '")'
-    Queue.add({command: command, execute_after: notification.delay })
+    if (!notification.media[medium].send || notification.media[medium].sent) return; //already sent/don't send
+    var command = 'Herald.escalate("' + notification._id + '", "' + medium + '")'
+    Queue.add({command: command })
   });
   Herald.collection.update(notification._id, { $set: { escalated: true } } );
 }
@@ -22,7 +23,7 @@ Herald.escalate = function (notificationId, medium) {
   var notification = Herald.collection.findOne(notificationId);
   if (!notification) return; //notification has been removed
   if (notification.read) return; //don't escalate a read notification!
-  if (!notification.media[medium]) return; //already sent or don't send
+  if (!notification.media[medium].send || notification.media[medium].sent) return; //already sent/don't send
 
   var user = Meteor.users.findOne(notification.userId)
   if (!user) return; //user has been removed

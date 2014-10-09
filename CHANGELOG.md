@@ -1,5 +1,10 @@
 # Herald ChangeLog - up-to-date as possible.
 
+## v0.10.0
+  * onRun added to couriers
+  * fallback setting added to couriers - disables autorun but allowas for onRun.transfer
+  * lots of backend changes.
+
 ## v0.9.0
   * full package refactor
   * removed deprecated metadata

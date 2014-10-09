@@ -8,9 +8,7 @@ Herald.createNotification = function (userIds, params) {
   // always assume multiple users.
   if (_.isString(userIds)) userIds = [userIds]
   users = Meteor.users.find({_id: {$in: userIds}}, {fields: {profile: 1}})
-  users.forEach(function (user) {
-    //create a notification for each user
-    userId = user._id
+  users.forEach(function (user) { //create a notification for each user
 
     //When creating a new notification
     // 
@@ -25,7 +23,7 @@ Herald.createNotification = function (userIds, params) {
 
     var notification = {
       timestamp: new Date().getTime(),
-      userId: userId,
+      userId: user._id,
       courier: params.courier,
       data: params.data,
       read: false,
@@ -37,12 +35,13 @@ Herald.createNotification = function (userIds, params) {
     _.each(_.keys(Herald._couriers[params.courier].media), function (medium) {
       //check if this notification should be sent to medium
       var run = true;
-      if (Herald.userPrefrence) 
-        if (!Herald.userPrefrence(user, medium, notification.courier)) run = false
-      
-      if (run) {
-        notification.media[medium] = {send: true, sent: false}
+      if (Herald._couriers[params.courier].media[medium].fallback) {
+        run = false;
+      } else {
+       if (!Herald.userPrefrence(user, medium, notification.courier)) run = false;
       };
+        
+      notification.media[medium] = {send: run, sent: false};
     });
 
     //create notification and return its id
