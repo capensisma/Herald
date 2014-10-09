@@ -33,7 +33,7 @@ Herald.addCourier('newPost', {
   },
 
   //will be a function on the collection instance, returned from find()/findOne()
-  message: function () { return 'There is a new post: "' + this.post.name + '"'; }
+  message: function () { return 'There is a new post: "' + this.data.post.name + '"'; }
 });
 
 ```
