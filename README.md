@@ -25,7 +25,7 @@ First a simple example (also see the [example app](https://github.com/Meteor-Rea
 
 #### On Client and Sever
 
-First define your courier. Don't worry to much about this when you getting started. Couriers are a lot like classes. You can add quite a lot of complex logic to them or keep them very simple and generic. In this example the courier will only send messages `onsite` (in app notifications). `onsite` does not take any optional arguments we can just pass it an empty object. It also provides an optional pre-formatted message. 
+First define your courier. Don't worry to much about this when you getting started. Couriers are a lot like classes. You can add quite a lot of complex logic to them or keep them very simple and generic. In this example the courier will only send messages `onsite` (in app notifications). `onsite` does not take any optional arguments, we can just pass it an empty object. This courier also provides an optional pre-formatted message. 
 
 ```js
 Herald.addCourier('newPost', {
@@ -71,7 +71,7 @@ Currently there is no prebuilt templates, but creating your own is easy
 </template>
 ```
 
-There can be other types of notifications on the client and you may not want to display them. It's best practices to always define the notifications you wish to display as `onsite`. We can easily get the appropriate notifications with `Herald.getNotification`. By default herald only publishes notifications, to the client, that have not been read.
+There can be other types of notifications on the client and you may not want to display them. It's best practice to always define the notifications you wish to display as `onsite`. We can easily get the appropriate notifications with `Herald.getNotification`. By default herald only publishes notifications that have not been read.
 
 ```js
 Template.notifications.notifications = Herald.getNotifications({medium: 'onsite'});
@@ -302,21 +302,10 @@ This will always scope the search to a user id and read state. If you need more 
 ### heraldMarkAllAsRead (method)
   To set call of the current user's notifications to read run `Meteor.call('heraldMarkAllAsRead')`
 
-### routeSeenByUser (if Package iron:router)
+### Route Detection (if Package iron:router)
   If you have iron:router added to your app you can automatically mark notifications as read based on when a user goes to specific routes.
 
   Using the [above 'newPost' courier](#basic-usage), lets say you set the notification `url: 'posts/[postId]'` when running `createNotification`. Assuming the route `posts/:postId`, if a user visits that route the appropriate notifications will be marked as read. 
-
-  A useful trick is to add a url function to the courier transform:
-  ```js
-  {
-    transform: {
-      url: function () {
-        return 'posts/' + this.data.post._id
-      }
-    }
-  }
-  ```
 
   The read url operation is currently done only on the client.
 

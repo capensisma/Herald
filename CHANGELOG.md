@@ -1,5 +1,9 @@
 # Herald ChangeLog - up-to-date as possible.
 
+## v1.0.0-pre2
+  * massive readme improvements
+  * query not querry typo fixes
+
 ## v1.0.0-pre1
   * added getNotifications as a convenience function
   * added heraldMarkAllAsRead as a convenience method
