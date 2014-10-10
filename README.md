@@ -7,7 +7,7 @@ A notifications pattern straight out of Telescope!
 
 Herald lets you easily send messages to any number of recipients via any courier included within your app by simply supplying the courier, recipient list, and data.
 
-The message data will be transmitted via all media (email, in-app-messaging, and/or other) common to both the courier and each recipient's preferences. Additionally, the courier will properly format each message's data appropriate to the media being utilized. (user preferences not yet officially supported)
+The message data will be transmitted via all media (email, in-app-messaging, and/or other) common to both the courier and each recipient's preferences. Additionally, the courier will properly format each message's data appropriate to the media being utilized.
 
 #### The current extension packages
 
@@ -311,18 +311,91 @@ This will always scope the search to a user id and read state. If you need more 
 
 ## User Preferences API
 
-### userPrefrence
+Herald looks at `user.profile.notifications` to identify users preferences. If the boolean is set to `true` then herald will send the notification. If the user's preferences have not been set then Herald defaults to true. You can change this default in [Herald.settings](#herald-settings-and-artwellsqueue)
+```js
+user.profile.notifications {
+  media: {
+    onsite: boolean,
+    email: boolean
+  },
+  couriers: {
+    newPost: {
+      onsite: boolean,
+      email: boolean
+    }
+  }
+}
+```
+While you can manage this preferences yourself, herald provides some helper functions to make this easier.
 
 ### getUserPrefrence
 
+Herald.userPrefrence(user, medium, courier) returns true if the user allows given medium
+
+##### user
+  Can be null, user id, or user. Will fetch current user if null.
+
+##### medium (required)
+  Must be the name of a medium
+
+##### courier 
+  The name of a courier. Will check if user has set preferences on this courier. If not it defaults to generic medium preferences.
+
 ### setUserMediaPreference
+```js
+  Herald.setUserMediaPreference(user, {
+    onsite: true, //send onsite
+    email: false //don't send email
+  }) 
+```
+
+##### user
+  null, user or user id. User is best as Herald will fetch the given user or the current user if null.
 
 ### setUserCourierPreference
 
+```js
+  Herald.setUserMediaPreference(user, courier, {
+    onsite: true, //send onsite
+    email: false //don't send email
+  }) 
+```
+
+##### user
+  null, user or user id. User is best as Herald will fetch the given user or the current user if null.
+
+##### courier
+  The name of the courier you want to set preferences on.
+
+### userPrefrence
+
+The only user preference function Herald calls is `Herald.userPrefrence()`. This just points to to `Herald.getUserPrefrence`. If you want to provide you own user preferences you can simply overload this function:
+```js
+Herald.userPrefrence = function (user, medium, courier) {
+  //user is always given
+  //medium is always given
+  //courier may be given.  
+  return boolean;
+}
+```
+If courier is given the request is asking if the user allows this medium for this courier.
+
+
 ## Herald settings and artwells:queue
 
-## onRun [advanced usage only]
-medium.onRun (function) 
+```js
+  overrides: { //disable given medium for all users. 
+    example: true //example medium would not be sent
+  }, 
+  queueTimmer: 60000, //run server queue once every minute
+  userPrefrenceDefault: true //send notifications unless the user has disabled
+```
+
+Herald uses [artwells:queue](https://github.com/artwells/meteor-queue) to manage server side async sending of notifications. All of the queue's default settings remain. Herald calls `Queue.run()` once every minute, unless `Herald.settings.queueTimmer` has been changed. While developing you may wish to set that timer to 5 or 10 seconds.
+
+## onRun [advanced usage only, experimental]
+
+TODO
 
 ## Extension API
 

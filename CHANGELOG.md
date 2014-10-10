@@ -3,6 +3,8 @@
 ## v1.0.0-pre2
   * massive readme improvements
   * query not querry typo fixes
+  * userPrefrenceDefault not userPrefrenceDefualt typo fixes
+  * TODO be sure generic user medium preferences are respected.
 
 ## v1.0.0-pre1
   * added getNotifications as a convenience function
