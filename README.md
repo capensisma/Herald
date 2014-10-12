@@ -474,5 +474,6 @@ Herald.addCourier('newPost', {
 });
 ```
 
+##Notes
 
 My usage of the noun forms of medium (singular) and media (plural for medium) is explained in here:  http://grammar.about.com/od/alightersideofwriting/a/mediagloss.htm
