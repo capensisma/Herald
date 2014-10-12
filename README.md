@@ -11,7 +11,7 @@ The message data will be transmitted via all media (email, in-app-messaging, and
 
 #### The current extension packages
 
-* [Herald-email](https://atmospherejs.com/kestanous/herald-email) ([GitHub](https://github.com/Meteor-Reaction/Herald-email)) - Add email to Harold
+* [Herald-Email](https://atmospherejs.com/kestanous/herald-email) ([GitHub](https://github.com/Meteor-Reaction/Herald-email)) - Add email to Harold
 * [Herald-Web-Notifications](https://atmospherejs.com/kestanous/herald-web-notifications) ([GitHub](https://github.com/Meteor-Reaction/Herald-Web-Notifications)) - Add Web Notifications to Harold
 
 #### Useful additional packages
@@ -21,11 +21,11 @@ The message data will be transmitted via all media (email, in-app-messaging, and
 
 ## Basic Usage
 
-First a simple example (also see the [example app](https://github.com/Meteor-Reaction/Herald-Example))
+First, a simple example: (also see the [example app](https://github.com/Meteor-Reaction/Herald-Example))
 
 #### On Client and Sever
 
-First define your courier. Don't worry to much about this when you getting started. Couriers are a lot like classes. You can add quite a lot of complex logic to them or keep them very simple and generic. In this example the courier will only send messages `onsite` (in app notifications). `onsite` does not take any optional arguments, we can just pass it an empty object. This courier also provides an optional pre-formatted message. 
+Define your courier. Don't worry to much about this when you getting started. Couriers are a lot like classes. You can add complex logic to them or keep them simple and generic. In this example the courier will only send messages `onsite` (in app notifications). `onsite` does not take any optional arguments, you can just pass it an empty object. This courier also provides an optional pre-formatted message. 
 
 ```js
 Herald.addCourier('newPost', {
@@ -42,7 +42,7 @@ Herald.addCourier('newPost', {
 ```
 
 #### On the Server
-You can create a new notification on the server with createNotification. This is what actually creates the notification. It calls on the courier `newPost` to figure out what metadata it needs. When it's saved in the database, the courier will be sure to deliver it via the appropriate media. In this case `onsite`, so it will be sent to the client for in app display. 
+You can create a new notification on the server with createNotification. This is what actually creates the notification. It calls on the courier `newPost` to determine what metadata it needs. When saved to the database, the courier will deliver it via the appropriate media - in this case `onsite`, so it will be sent to the client for in app display. 
 
 ```js
 
@@ -57,7 +57,7 @@ Herald.createNotification(userId, params)
 ```
 #### On the Client
 
-Currently there is no prebuilt templates, but creating your own is easy
+As of this writing there are no prebuilt templates, but creating your own is easy:
 
 ```html
 <template name='notifications'>
@@ -71,10 +71,10 @@ Currently there is no prebuilt templates, but creating your own is easy
 </template>
 ```
 
-There can be other types of notifications on the client and you may not want to display them. It's best practice to always define the notifications you wish to display as `onsite`. We can easily get the appropriate notifications with `Herald.getNotification`. By default herald only publishes notifications that have not been read.
+There can be other types of notifications on the client, and you may not want to display them. As Herald is always aware of `onsite` it is best practice to define the notifications you wish to display as `onsite`. Ergo, you can easily get appropriate notifications with `Herald.getNotification`. By default Herald only publishes notifications that have not been read.
 
 ```js
-Template.notifications.notifications = Herald.getNotifications({medium: 'onsite'});
+Template.notifications.notifications = Herald.getNotifications({medium: 'onsite'});   // Preventing unwanted media
 
 Template.notifications.events({
   'click .item': function (event, template) {
@@ -87,9 +87,9 @@ Template.notifications.events({
 ##Overview
 
 
-#### Media (medium)
+#### Medium
 
-In this package media refers to the many types formats that you can use transmit messages. Most common examples would be in-app-notifications and Emails. In the future I hope to expand this list to include things like push notifications and text messages. For reference, media is plural for medium.
+In this package medium refers to the many formats that you can use transmit messages. Common examples are in-app-notifications and Email. In the future I hope to expand this list to include things like push notifications and text messages.
 
 #### Couriers
 
@@ -107,7 +107,7 @@ Behind the scenes couriers call runners. There is one runner per medium. Normal 
 
 #### Meteor Collection 'notifications'
 
-`Herald.collection` is your notification Meteor Collection. While `Herald.getNotifications` is the easiest to use, feel free to use this as you would with any Collection. The only limit is inserts. Client side inserts are denied and you should call `Herald.createNotification(userId, params)` on the server. 
+`Herald.collection` is your notification Meteor Collection. While `Herald.getNotifications` is the easiest to use, feel free to use this as you would any Collection. The only limit is inserts; client side inserts are denied and you should call `Herald.createNotification(userId, params)` on the server. 
 
 
 ```js
@@ -128,7 +128,7 @@ notification = {
 }
 ```
 
-You can add a `Herald.collection.deny` if you would like to be more restrictive on client updates. The built in permissions are:
+You can add a `Herald.collection.deny` to be more restrictive on client updates. The built-in permissions are:
 
 ```js
 Herald.collection.allow({
@@ -137,16 +137,16 @@ Herald.collection.allow({
   remove: function (userId, doc) { return userId == doc.userId }
 });
 ```
-There is a built in pub/sub('notifications') that sends notifications down to the client. It sends down all the client-side notifications that have not been read, have not been sent, and should be sent. (`onsite` is always marked as should send and has not been sent)
+There is a built-in pub/sub ('notifications') that delivers notifications to the client. It sends down all the client-side notifications that have not been read, have not been sent, and should be sent (`onsite` is always marked as should send and has not been sent).
 
 #### Cleanup
-Currently this package does **not** delete any notifications! You will likely want to do that yourself. I would recommend an observe function on the server to removes notifications when they are read.
+Currently this package does **not** delete any notifications! You will likely want to do that yourself. I would recommend an observe function on the server to remove notifications when they are read, or use age-based cleanup.
 
 ## General API
 
-### addCourier (both)
+### addCourier (Server and Client)
 
-You should define your courier on both the server and the client. The following is an example of a courier with all the available options. The only required ones are the name and the media. 
+You should define your courier on both the server and the client. The following is an example of a courier with all the available options. Name and media are required. 
 
 ```js
 
@@ -164,11 +164,11 @@ Herald.addCourier(name, {
 
 ##### name (string) [required]
   
-The name of this courier, must be unique. This should be descriptive of how you want to use this courier. If is a general courier for `onsite` notifications you could call it `inAppCourier`. However its more likely that you will want to have custom messages and transform functions. For example if you are notifying users of comments on a blog you may want to call it `newComment`.
+The name of this courier must be unique. This should be descriptive of how you want to use this courier, e.g. a general courier for `onsite` notifications could be called `inAppCourier`. However its more likely that you will want to have custom messages and transform functions. For example if you are notifying users of comments on a blog you may want to call it `newBlogComment`.
 
 ##### media (object) [required]
 
-This object should list each medium you wish to use along with any medium specific configurations. `onsite` does not have any configurations so you can just pass it an empty object. Each extension package will detail what kind of configurations you can use. Here is an example with `onsite` and `webNotifications`:
+This object should list each medium you wish to use along with any medium specific configurations. `onsite` does not have any configuration so you can just pass it an empty object. Each extension package will detail what kind of configuration you can use. Here is an example with `onsite` and `webNotifications`:
 
 ```js
 media: {
@@ -183,7 +183,7 @@ media: {
 ```
 ###### A note on onRun and fallback
 
-In addition to configuration you can also add `onRun` and `fallback` to your medium objects. For more details see the [onRun](#onrun-advanced-usage-only) section.
+In addition to configuration you can also add `onRun` and `fallback` to your media. For more details see the [onRun](#onrun-advanced-usage-only) section.
 
 ```js
 //not a functional example, simplified for readability
@@ -202,11 +202,11 @@ media: {
 }
 ```
 
-##### message ( function || string || object) 
+##### Message ( function || string || object) 
 
-  The courier also comes with an optional message tool. This will be available on the notification instance. You can pass a function, string, or an object. For a simple use cases you will likely just use the function option.
+The courier also comes with an optional message tool, available on the notification instance. You can pass a function, string, or an object. For simple use cases you will likely just use the function option.
  
-  * function 
+  * Function 
   
   The function will run with the notification instance as its context (this)
 
@@ -217,9 +217,9 @@ media: {
 
   instance.message() //'post: postName'
   ```
-  * string 
+  * String 
   
-  A string be read as a Template name. Herald will return a live Blaze view when you call the message. It will have the notification as its data context.
+A string to be read as a Template name. Herald will return a live Blaze view when you call the message. It will have the notification as its data context.
 
   ```js
   {
@@ -227,9 +227,10 @@ media: {
   }
   instance.message() //the template 'example'
   ```
-  * object
+  * Object
   
-  You can usage an object to allow for more then one message. The property called will be based on the message function argument string. Running message() without an argument will call object.default.
+You can use an object to allow for more then one message. The property called will be based on the message's function's argument string. Running message() without an argument will call object.default.
+
   ```js
   {
     message: object: {
@@ -241,8 +242,10 @@ media: {
   instance.message('fn') //message
   ```
 
-##### transform 
-  Any **static** data or functions you want added to the notification instance via collection transform. Much like the message function option each function will be called with the notification as its `this` context. 
+##### Transform 
+
+Any **static** data or functions you want added to the notification instance via its collection's transform. Much like the message function option each function will be called with the notification's `this` context. 
+
   ```js
   {
     transform: {
@@ -253,11 +256,10 @@ media: {
   }
   instance.name() // 'courierName'
   ```
+  
+### createNotification (Server)
 
-
-### createNotification (server)
-
-You should create all your notifications with `Herald.createNotification`. This function create notifications gives them to the courier to manage. Note that this can only be done on the server.
+You should create all your notifications with `Herald.createNotification`. This function creates notifications and delivers them to the courier to manage. Note that this can only be done on the server.
 
 ```js
 //Herald.createNotification(userId, object)
@@ -270,7 +272,7 @@ Herald.createNotification(userId, {
 
 ##### userId 
 
-This can be ether a user id or an array of user ids. A separate notification will be created for each user.
+This can be a user id or an array of user ids. A separate notification will be created for each user.
 
 ##### courier 
   
@@ -278,15 +280,15 @@ A string name referencing a courier.
 
 ##### data (object)
 
-Any data important to this specific notification. This is usually things like a collection _id and and other fields. It must be in object form but there are no other limitations. This will be saved in the database so try to be sparse where possible. You can use the courier transform to save static data.
+Any data important to this specific notification. This is usually things like a collection _id and other fields. It must be in object form. This will be saved in the database so be sparse for database efficiency. You can use the courier transform to save static data.
 
 ##### url (sting)
 
 This is optional but is used by a number of tools. For example, if you are using iron:router it can automatically mark the notification as read. See [routeSeenByUser](#routeseenbyuser-if-package-ironrouter).
 
-### getNotification (both)
+### getNotification (Server and Client)
 
-`Herald.getNotifications(query, options)` is a light wrapper around Meteor.Collection.find(). You can pass an object query and [collection find options](http://docs.meteor.com/#find) and it returns a courser.
+`Herald.getNotifications(query, options)` is a light wrapper around Meteor.Collection.find(). You can pass an object query with [collection find options](http://docs.meteor.com/#find), and it will return a cursor.
 
 The query can have any of the following: 
 ```js
@@ -300,14 +302,16 @@ The query can have any of the following:
 This will always scope the search to a user id and read state. If you need more control then you can use `Herald.collection.find()`
 
 ### heraldMarkAllAsRead (method)
-  To set call of the current user's notifications to read run `Meteor.call('heraldMarkAllAsRead')`
+
+To set all of the current user's notifications as read, run `Meteor.call('heraldMarkAllAsRead')`
 
 ### Route Detection (if Package iron:router)
-  If you have iron:router added to your app you can automatically mark notifications as read based on when a user goes to specific routes.
 
-  Using the [above 'newPost' courier](#basic-usage), lets say you set the notification `url: 'posts/[postId]'` when running `createNotification`. Assuming the route `posts/:postId`, if a user visits that route the appropriate notifications will be marked as read. 
+If you have iron:router added to your app you can automatically mark notifications as read when a user arrives at specific routes.
 
-  The read url operation is currently done only on the client.
+For example, when using the [above 'newPost' courier](#basic-usage), let's say you set the notification `url: 'posts/[postId]'` when running `createNotification`. Assuming the route `posts/:postId`, if a user visits that route the appropriate notifications will be marked as 'read'. 
+
+The read url operation is currently done only on the client.
 
 ## User Preferences API
 
@@ -333,13 +337,13 @@ While you can manage this preferences yourself, herald provides some helper func
 Herald.userPrefrence(user, medium, courier) returns true if the user allows given medium
 
 ##### user
-  Can be null, user id, or user. Will fetch current user if null.
+Can be null, user id, or user. Will fetch current user if null.
 
 ##### medium (required)
-  Must be the name of a medium
+Must be the name of a medium
 
 ##### courier 
-  The name of a courier. Will check if user has set preferences on this courier. If not it defaults to generic medium preferences.
+The name of a courier. Will check if user has set preferences on this courier. If not it defaults to generic medium preferences.
 
 ### setUserMediaPreference
 ```js
@@ -350,7 +354,7 @@ Herald.userPrefrence(user, medium, courier) returns true if the user allows give
 ```
 
 ##### user
-  null, user or user id. User is best as Herald will fetch the given user or the current user if null.
+null, user or user id. User is best as Herald will fetch the given user or the current user if null.
 
 ### setUserCourierPreference
 
@@ -362,14 +366,15 @@ Herald.userPrefrence(user, medium, courier) returns true if the user allows give
 ```
 
 ##### user
-  null, user or user id. User is best as Herald will fetch the given user or the current user if null.
+null, user or user id. User is best as Herald will fetch the given user or the current user if null.
 
 ##### courier
-  The name of the courier you want to set preferences on.
+The name of the courier you want to set preferences on.
 
 ### userPrefrence
 
 The only user preference function Herald calls is `Herald.userPrefrence()`. This just points to to `Herald.getUserPrefrence`. If you want to provide you own user preferences you can simply overload this function:
+
 ```js
 Herald.userPrefrence = function (user, medium, courier) {
   //user is always given
@@ -378,8 +383,8 @@ Herald.userPrefrence = function (user, medium, courier) {
   return boolean;
 }
 ```
-If courier is given the request is asking if the user allows this medium for this courier.
 
+If courier is given the request is asking if the user allows this medium for this courier.
 
 ## Herald settings and artwells:queue
 
@@ -434,3 +439,6 @@ Herald.addCourier('newPost', {
   },
 });
 ```
+
+
+Note: Rather than take issue with my usage of the noun forms of medium (singular) and media (plural for medium), please see this link:  http://grammar.about.com/od/alightersideofwriting/a/mediagloss.htm
