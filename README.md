@@ -316,6 +316,7 @@ The read url operation is currently done only on the client.
 ## User Preferences API
 
 Herald looks at `user.profile.notifications` to identify users preferences. If the boolean is set to `true` then herald will send the notification. If the user's preferences have not been set then Herald defaults to true. You can change this default in [Herald.settings](#herald-settings-and-artwellsqueue)
+
 ```js
 user.profile.notifications {
   media: {
@@ -330,7 +331,7 @@ user.profile.notifications {
   }
 }
 ```
-While you can manage this preferences yourself, herald provides some helper functions to make this easier.
+While you can manage user preferences yourself, Herald provides some helper functions to make this easier.
 
 ### getUserPrefrence
 
@@ -345,31 +346,27 @@ Must be the name of a medium
 ##### courier 
 The name of a courier. Will check if user has set preferences on this courier. If not it defaults to generic medium preferences.
 
-### setUserMediaPreference
+### setUserPreference
+
 ```js
-  Herald.setUserMediaPreference(user, {
-    onsite: true, //send onsite
-    email: false //don't send email
-  }) 
+var preferences = {
+  onsite: true, //send onsite
+  email: false //don't send email
+}
+Herald.setUserMediaPreference(user, preferences, courier) 
 ```
 
 ##### user
-null, user or user id. User is best as Herald will fetch the given user or the current user if null.
 
-### setUserCourierPreference
+Can be undefined, a user object or the user id. Herald will fetch the current user if undefined.
 
-```js
-  Herald.setUserMediaPreference(user, courier, {
-    onsite: true, //send onsite
-    email: false //don't send email
-  }) 
-```
+##### preferences (required)
 
-##### user
-null, user or user id. User is best as Herald will fetch the given user or the current user if null.
+An object listing the users preferences on the given media. True for send, false for don't send.
 
 ##### courier
-The name of the courier you want to set preferences on.
+
+An optional argument. If undefined it will set the general user preferences. If it is the name of a courier then it will set the preferences specifically for that courier. General preferences do not have to be defined for these preferences to be respected.
 
 ### userPrefrence
 

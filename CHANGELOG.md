@@ -5,8 +5,8 @@
   * userPrefrenceDefault not userPrefrenceDefualt typo fixes
   * query not querry typo fixes
   * massive readme improvements
-  
-  * TODO be sure generic user medium preferences are respected.
+  * removed broken setUserMediaPreference and setUserCourierPreference
+  * added ?working? setUserPreference
 
 ## v1.0.0-pre1
   * added getNotifications as a convenience function
