@@ -399,9 +399,6 @@ TODO
 
 ## Extension API
 
-### escalate and delayEscalation
- Currently notification escalation is called as soon as the notification is created. The media then call their respective runners. I would like to allow package users to delay this and call later. For example, I would like to check if the user is online and if so delay sending a email for 5 minutes. The assumption being that the user will respond to the in app notification. PRs are welcome ;)
-
 ### addRunner
 Adding more media and runners is very easy, just call `Herald.addRunner(object)`.
 
