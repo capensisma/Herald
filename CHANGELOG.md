@@ -1,9 +1,11 @@
 # Herald ChangeLog - up-to-date as possible.
 
 ## v1.0.0-pre2
+  * getNotifications() fixes and read now defaults to false
   * massive readme improvements
   * query not querry typo fixes
   * userPrefrenceDefault not userPrefrenceDefualt typo fixes
+
   * TODO be sure generic user medium preferences are respected.
 
 ## v1.0.0-pre1

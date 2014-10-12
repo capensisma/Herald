@@ -296,7 +296,7 @@ The query can have any of the following:
   user: _id, //required
   courier: 'name', 
   medium: 'medium name', 
-  read = boolean //default true
+  read = boolean //default false
 }
 ```
 This will always scope the search to a user id and read state. If you need more control then you can use `Herald.collection.find()`
