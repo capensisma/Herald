@@ -385,19 +385,59 @@ If courier is given the request is asking if the user allows this medium for thi
 
 ## Herald settings and artwells:queue
 
+Herald has a few settings that make development easier. You can set these at `Herald.settings`.
+
 ```js
+Herald.settings = {
   overrides: { //disable given medium for all users. 
     example: true //example medium would not be sent
   }, 
   queueTimmer: 60000, //run server queue once every minute
   userPrefrenceDefault: true //send notifications unless the user has disabled
+}
 ```
 
 Herald uses [artwells:queue](https://github.com/artwells/meteor-queue) to manage server side async sending of notifications. All of the queue's default settings remain. Herald calls `Queue.run()` once every minute, unless `Herald.settings.queueTimmer` has been changed. While developing you may wish to set that timer to 5 or 10 seconds.
 
 ## onRun [advanced usage only, experimental]
 
-TODO
+Every courier calls the onRun function before sending a notification on a medium. The function called will have a `this` context with four functions. The return value of onRun must be the result of one of these four functions.
+
+```js
+Herald.addCourier(name, {
+  media: { 
+    medium: {
+      onRun: function () {
+        return this.run() //if called you must return one of the functions
+      }
+    }
+  }
+});
+```
+
+##### run
+
+`this.run()` tells the courier to send the notification. It has no arguments.
+
+##### stop
+
+`this.stop()` tells the courier not to send the notification. It has no arguments.
+
+##### delay
+
+`this.delay(time)` tells the courier to wait to send the notification on this medium. The time argument must be an instance of the native `Date` object. If the amount of time from now to the date is less then one second (including negative time) then delay will default to 1 second. 
+
+Note: The real time delay depends on many factors and may be longer then the give time. This is especially true for server side delays as Herald will wait until the next `Queue.run()` call.
+
+**DANGER:** endless looping is possible! This will also cause numinous database writes for every delay.
+
+##### transfer
+
+`this.transfer(medium, time)` tells the courier to send the notification on a different medium. The medium must already be defined on the courier. If the notification has already been sent medium on that medium then nothing will be sent.
+
+The time arguement is the same as `this.delay`. If undefined it will default to 1 second.
+
+**DANGER:** endless looping between mediums is possible! This will also cause numinous database writes for every transfer.
 
 ## Extension API
 
@@ -435,4 +475,4 @@ Herald.addCourier('newPost', {
 ```
 
 
-Note: Rather than take issue with my usage of the noun forms of medium (singular) and media (plural for medium), please see this link:  http://grammar.about.com/od/alightersideofwriting/a/mediagloss.htm
+My usage of the noun forms of medium (singular) and media (plural for medium) is explained in here:  http://grammar.about.com/od/alightersideofwriting/a/mediagloss.htm
