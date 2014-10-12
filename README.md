@@ -437,7 +437,7 @@ Note: The real time delay depends on many factors and may be longer then the giv
 
 The time arguement is the same as `this.delay`. If undefined it will default to 1 second.
 
-**DANGER:** endless looping between mediums is possible! This will also cause numinous database writes for every transfer.
+**DANGER:** endless looping between media is possible! This will also cause numinous database writes for every transfer.
 
 ## Extension API
 
