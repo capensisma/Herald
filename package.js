@@ -32,3 +32,8 @@ Package.onUse(function(api) {
 
   api.export(['Notifications', 'Herald']);
 });
+
+Package.onTest(function (api) {
+  api.use('mike:mocha')
+  api.addFiles('tests/test-example.js')
+});
