@@ -7,7 +7,7 @@ Herald.escalate = function (notification) {
     if (Herald.settings.overrides[medium]) return; //disabled by override
     if (medium == 'onsite') return; //don't run onsite
     var run = true; 
-    if (!Herald.userPrefrence(user, medium, notification.courier)) run = false
+    if (!Herald.userPreference(user, medium, notification.courier)) run = false
 
     var thisOnRun = Herald._couriers[notification.courier].media[medium].onRun
     if (_.isFunction(thisOnRun)) {

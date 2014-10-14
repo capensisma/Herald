@@ -31,7 +31,7 @@ Herald.escalate = function (notificationId, medium) {
 
 
   var run = true; //does the user want you to send on this medium?
-  if (!Herald.userPrefrence(user, medium, notification.courier)) run = false
+  if (!Herald.userPreference(user, medium, notification.courier)) run = false
 
   var thisOnRun = Herald._couriers[notification.courier].media[medium].onRun
   if (_.isFunction(thisOnRun)) {

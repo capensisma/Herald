@@ -38,7 +38,7 @@ Herald.createNotification = function (userIds, params) {
       if (Herald._couriers[params.courier].media[medium].fallback) {
         run = false;
       } else {
-       if (!Herald.userPrefrence(user, medium, notification.courier)) run = false;
+       if (!Herald.userPreference(user, medium, notification.courier)) run = false;
       };
         
       notification.media[medium] = {send: run, sent: false};

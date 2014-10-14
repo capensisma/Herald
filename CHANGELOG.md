@@ -1,5 +1,8 @@
 # Herald ChangeLog - up-to-date as possible.
 
+## v1.0.0-pre3
+  * Preference not Prefrence typo fix in all usages.
+
 ## v1.0.0-pre2
   * getNotifications() fixes and read now defaults to false
   * userPrefrenceDefault not userPrefrenceDefualt typo fixes
