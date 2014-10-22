@@ -1,7 +1,7 @@
 #Herald - Universal Notifications
 [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/Meteor-Reaction/Herald?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-###### This readme is for v1.0.0-pre3! 
+###### This readme is for v1.0.0. Pre-1 versions are not considered stable.
 
 A notifications pattern straight out of Telescope!
 
