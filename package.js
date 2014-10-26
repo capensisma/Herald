@@ -10,7 +10,7 @@ Package.onUse(function(api) {
   api.use(['standard-app-packages', 'artwells:queue@0.0.3']); //TODO: reduce this to the minimum requirements.
 
   //if iron route is present add 'seen route' logic
-  api.use('iron:router@0.9.0', ['server', 'client'], {weak: true}); 
+  api.use('iron:router@1.0.0-pre4', ['server', 'client'], {weak: true}); 
 
   api.addFiles([
     'lib/$herald.js', 
