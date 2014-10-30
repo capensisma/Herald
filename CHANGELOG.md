@@ -1,7 +1,12 @@
 # Herald ChangeLog - up-to-date as possible.
 
+## v1.0.1
+  * Support for iron:router@1.x.x
+  * Removed 'Notifications' from exports
+  * Removed unneeded package dependencies
+
 ## v1.0.0
-  No changes!
+  * No changes!
 
 ## v1.0.0-pre3
   * Preference not Prefrence typo fix in all usages. (Thanks: @erasaur)
