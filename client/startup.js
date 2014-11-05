@@ -17,6 +17,7 @@ Meteor.startup(function () {
       Herald.collection.find({url:this.path, read: false}, {fields: {read: 1}}).forEach(function (notification) {
         Herald.collection.update(notification._id, { $set: { read: true } })
       });
+    this.next();
     }
     if (Router.onRun) //not sure when this changed so just to be safe
       Router.onRun(routeSeenByUser);
