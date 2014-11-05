@@ -1,6 +1,6 @@
 Package.describe({
   summary: "A Universal Notifications Engine",
-  version: "1.0.2",
+  version: "1.1.0",
   git: "https://github.com/Meteor-Reaction/Herald.git",
   name: 'kestanous:herald'
 });
@@ -10,7 +10,7 @@ Package.onUse(function(api) {
   api.use(['underscore', 'tracker','accounts-base', 'blaze', 'artwells:queue@0.0.3']);
 
   //if iron route is present add 'seen route' logic
-  api.use('iron:router@0.9.0 || 1.0.0', ['server', 'client'], {weak: true}); 
+  api.use('1.0.0', ['server', 'client'], {weak: true}); 
 
   api.addFiles([
     'lib/$herald.js', 
