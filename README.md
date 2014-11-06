@@ -1,7 +1,9 @@
 #Herald - Universal Notifications
 [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/Meteor-Reaction/Herald?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-###### This readme is for v1.0.0. Pre-1 versions are not considered stable.
+###### This readme is for v1.0.0. Pre-1 versions are not considered stable. 
+
+###### Herald v1.1+ only supports iron:router v1.0+ but you can use Herald v1.0 to use older versions.
 
 A notifications pattern straight out of Telescope!
 
