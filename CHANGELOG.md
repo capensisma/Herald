@@ -1,5 +1,11 @@
 # Herald ChangeLog - up-to-date as possible.
 
+## v1.1.1
+  allow for collection name change
+
+## v1.1.0
+  fix for iron:router@1.0.0+, no longer support older versions
+
 ## v1.0.1
   * Support for iron:router@1.x.x
   * Removed 'Notifications' from exports

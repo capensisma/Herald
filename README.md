@@ -393,7 +393,8 @@ Herald.settings = {
     example: true //example medium would not be sent
   }, 
   queueTimmer: 60000, //run server queue once every minute
-  userPrefrenceDefault: true //send notifications unless the user has disabled
+  userPrefrenceDefault: true, //send notifications unless the user has disabled
+  collectionName: 'notifications' //override herald collection name, must be before meteor startup
 }
 ```
 
