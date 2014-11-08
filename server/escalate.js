@@ -26,7 +26,6 @@ Meteor.methods({
      * @param {string} medium
      */
     "heraldEscalate": function (notificationId, medium) {
-        console.log("try heraldEscalate")
         try {
             Herald.escalate(notificationId, medium);
         } catch (e) {
