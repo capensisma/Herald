@@ -19,8 +19,8 @@ Herald.escalate = function (notification) {
     if (run) {
       Herald._clientRunners[medium].call(Herald._couriers[notification.courier].media[medium], 
         notification, user)
-      var query = { media: {} }
-      query[medium] = { send: false, sent: true }
+      var query = {};
+      query['media.' + medium] = { send: false, sent: true }
       Herald.collection.update(notification._id, {$set: query });
     } else {
       var query = {};
