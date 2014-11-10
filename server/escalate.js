@@ -12,11 +12,28 @@ Herald.SetupEscalations = function (notification) {
   _.each(_.keys(Herald._couriers[notification.courier].media), function (medium) {
     if (!_.contains(_.keys(Herald._serverRunners), medium)) return; //Server only
     if (!notification.media[medium].send || notification.media[medium].sent) return; //already sent/don't send
-    var command = 'Herald.escalate("' + notification._id + '", "' + medium + '")'
+    var command = 'Meteor.call("heraldEscalate","' + notification._id + '", "' + medium + '")';
     Queue.add({command: command })
   });
   Herald.collection.update(notification._id, { $set: { escalated: true } } );
 }
+
+Meteor.methods({
+    /**
+     * Server method to call Herald.escalate out of the queue package
+     *
+     * @param {string} notificationId
+     * @param {string} medium
+     */
+    "heraldEscalate": function (notificationId, medium) {
+        try {
+            Herald.escalate(notificationId, medium);
+        } catch (e) {
+            throw new Meteor.Error("Can't start Herald.escalate: " + e);
+        }
+    }
+});
+
 
 Herald.escalate = function (notificationId, medium) {
 
