@@ -13,7 +13,7 @@ Meteor.startup(function () {
 
   // check for iron:router and if you depend on older version then iron:router disable it
   if(Package['iron:router'] && Herald.settings.useIronRouter) {
-    routeSeenByUser = function () {
+    var routeSeenByUser = function () {
       //TODO (possibly): make this a method
       //TODO (possibly): allow for disable overall and/or on a per user basis
       Herald.collection.find({
