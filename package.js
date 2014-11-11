@@ -10,7 +10,7 @@ Package.onUse(function(api) {
   api.use(['check', 'underscore', 'tracker','accounts-base', 'blaze', 'artwells:queue@0.0.3']);
 
   //if iron route is present add 'seen route' logic
-  api.use('iron:router@1.0.0', ['server', 'client'], {weak: true}); 
+  api.use('iron:router@0.9.3', ['server', 'client'], {weak: true});
 
   api.addFiles([
     'lib/$herald.js', 
