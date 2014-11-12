@@ -1,10 +1,15 @@
 # Herald ChangeLog - up-to-date as possible.
 
+## v1.1.2
+  * improved iron:router support and returned pre v1 support
+  * herald.settings.useIronRouter is true, if set to false iron:router will not be used
+  * All credit to @dohomi
+
 ## v1.1.1
-  allow for collection name change
+  * allow for collection name change
 
 ## v1.1.0
-  fix for iron:router@1.0.0+, no longer support older versions
+  * fix for iron:router@1.0.0+, no longer support older versions
 
 ## v1.0.1
   * Support for iron:router@1.x.x

@@ -3,8 +3,6 @@
 
 ###### This readme is for v1.0.0. Pre-1 versions are not considered stable. 
 
-###### Herald v1.1+ only supports iron:router v1.0+ but you can use Herald v1.0 to use older versions.
-
 A notifications pattern straight out of Telescope!
 
 Herald lets you easily send messages to any number of recipients via any courier included within your app by simply supplying the courier, recipient list, and data.
@@ -396,7 +394,8 @@ Herald.settings = {
   }, 
   queueTimmer: 60000, //run server queue once every minute
   userPrefrenceDefault: true, //send notifications unless the user has disabled
-  collectionName: 'notifications' //override herald collection name, must be before meteor startup
+  collectionName: 'notifications', //override herald collection name, must be set before meteor startup
+  useIronRouter: true //use iron:router if available.
 }
 ```
 
