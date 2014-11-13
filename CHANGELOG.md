@@ -1,5 +1,8 @@
 # Herald ChangeLog - up-to-date as possible.
 
+## v1.1.3
+  * Check if user is still logging in
+
 ## v1.1.2
   * improved iron:router support and returned pre v1 support
   * herald.settings.useIronRouter is true, if set to false iron:router will not be used
