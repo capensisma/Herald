@@ -22,7 +22,7 @@ Package.onUse(function(api) {
     'lib/helpers.js'
   ]);
 
-  api.addFiles(['client/startup.js', 'client/escalate.js'], 'client');
+  api.addFiles(['client/startup.js', 'client/helpers.js', 'client/escalate.js'], 'client');
 
   api.addFiles([
     'server/createNotification.js', 
