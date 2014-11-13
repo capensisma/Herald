@@ -1,5 +1,8 @@
 # Herald ChangeLog - up-to-date as possible.
 
+## v1.2.0
+  * moved getNotifications to client only
+
 ## v1.1.3
   * Check if user is still logging in
 
