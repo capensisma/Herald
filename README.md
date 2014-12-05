@@ -333,9 +333,9 @@ user.profile.notifications {
 ```
 While you can manage user preferences yourself, Herald provides some helper functions to make this easier.
 
-### getUserPrefrence
+### getUserPreference
 
-Herald.userPrefrence(user, medium, courier) returns true if the user allows given medium
+Herald.userPreference(user, medium, courier) returns true if the user allows given medium
 
 ##### user
 Can be null, user id, or user. Will fetch current user if null.
@@ -368,12 +368,12 @@ An object listing the users preferences on the given media. True for send, false
 
 An optional argument. If undefined it will set the general user preferences. If it is the name of a courier then it will set the preferences specifically for that courier. General preferences do not have to be defined for these preferences to be respected.
 
-### userPrefrence
+### userPreference
 
-The only user preference function Herald calls is `Herald.userPrefrence()`. This just points to to `Herald.getUserPrefrence`. If you want to provide you own user preferences you can simply overload this function:
+The only user preference function Herald calls is `Herald.userPreference()`. This just points to to `Herald.getUserPreference`. If you want to provide you own user preferences you can simply overload this function:
 
 ```js
-Herald.userPrefrence = function (user, medium, courier) {
+Herald.userPreference = function (user, medium, courier) {
   //user is always given
   //medium is always given
   //courier may be given.  
@@ -392,14 +392,14 @@ Herald.settings = {
   overrides: { //disable given medium for all users. 
     example: true //example medium would not be sent
   }, 
-  queueTimmer: 60000, //run server queue once every minute
-  userPrefrenceDefault: true, //send notifications unless the user has disabled
+  queueTimer: 60000, //run server queue once every minute
+  userPreferenceDefault: true, //send notifications unless the user has disabled
   collectionName: 'notifications', //override herald collection name, must be set before meteor startup
   useIronRouter: true //use iron:router if available.
 }
 ```
 
-Herald uses [artwells:queue](https://github.com/artwells/meteor-queue) to manage server side async sending of notifications. All of the queue's default settings remain. Herald calls `Queue.run()` once every minute, unless `Herald.settings.queueTimmer` has been changed. While developing you may wish to set that timer to 5 or 10 seconds.
+Herald uses [artwells:queue](https://github.com/artwells/meteor-queue) to manage server side async sending of notifications. All of the queue's default settings remain. Herald calls `Queue.run()` once every minute, unless `Herald.settings.queueTimer` has been changed. While developing you may wish to set that timer to 5 or 10 seconds.
 
 ## onRun [advanced usage only, experimental]
 
