@@ -2,12 +2,16 @@
 Herald.createNotification = function (userIds, params) {
   check(userIds, Match.OneOf([String], String)); //TODO: better Collection ID check
   check(params, Object);
-  if (!Herald._couriers[params.courier])
+
+  var courier = Herald._getCourier(params.courier);
+  if (!courier) {
     throw new Error('Notification: courier type does not exists');
+  }
 
   // always assume multiple users.
-  if (_.isString(userIds)) userIds = [userIds]
-  users = Meteor.users.find({_id: {$in: userIds}}, {fields: {profile: 1}})
+  if (_.isString(userIds)) userIds = [userIds];
+  users = Meteor.users.find({ _id: { $in: userIds } }, { fields: { profile: 1 } });
+  
   users.forEach(function (user) { //create a notification for each user
 
     //When creating a new notification
@@ -32,16 +36,13 @@ Herald.createNotification = function (userIds, params) {
       media: {}
     };
 
-    _.each(_.keys(Herald._couriers[params.courier].media), function (medium) {
-      //check if this notification should be sent to medium
-      var run = true;
-      if (Herald._couriers[params.courier].media[medium].fallback) {
-        run = false;
-      } else {
-       if (!Herald.userPreference(user, medium, notification.courier)) run = false;
-      };
+    //check if this notification should be sent to medium
+    _.each(_.keys(courier.media), function (medium) {
+      var fallback = courier.media[medium].fallback;
+      var preference = Herald.userPreference(user, medium, notification.courier);
         
-      notification.media[medium] = {send: run, sent: false};
+      // run if not a fallback and preference allows it
+      notification.media[medium] = { send: !fallback && preference, sent: false };
     });
 
     //create notification and return its id
@@ -49,8 +50,8 @@ Herald.createNotification = function (userIds, params) {
 
     //if no notificationId then insert failed anD PANIC, STOP, DON'T ACUTALLY DO THIS!
     if (notificationId) {
-      notification._id = notificationId
-      Herald.SetupEscalations(notification)
+      notification._id = notificationId;
+      Herald.SetupEscalations(notification);
     }
 
     return notificationId;
