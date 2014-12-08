@@ -10,7 +10,7 @@ Herald.createNotification = function (userIds, params) {
 
   // always assume multiple users.
   if (_.isString(userIds)) userIds = [userIds];
-  users = Meteor.users.find({ _id: { $in: userIds } }, { fields: { profile: 1 } });
+  var users = Meteor.users.find({ _id: { $in: userIds } }, { fields: { profile: 1 } });
   
   users.forEach(function (user) { //create a notification for each user
 
