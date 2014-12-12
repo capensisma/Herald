@@ -1,6 +1,6 @@
 //only load if user is logged in
 Tracker.autorun(function () {
-  if(Meteor.userId()) {
+  if (Meteor.userId()) {
     Meteor.subscribe('notifications');
   }
 });
@@ -12,19 +12,21 @@ Tracker.autorun(function () {
 Meteor.startup(function () {
 
   // check for iron:router and if you depend on older version then iron:router disable it
-  if(Package['iron:router'] && Herald.settings.useIronRouter) {
+  if (Package['iron:router'] && Herald.settings.useIronRouter) {
     var routeSeenByUser = function () {
       //TODO (possibly): make this a method
       //TODO (possibly): allow for disable overall and/or on a per user basis
-      Herald.collection.find({
-        url: this.path,
-        read: false
-      }, {fields: {read: 1}}).forEach(function (notification) {
-        Herald.collection.update(notification._id, {$set: {read: true}})
+      var notifications = Herald.collection.find({ url: this.path, read: false }, {
+        fields: { read: 1 }
       });
+
+      notifications.forEach(function (notification) {
+        Herald.collection.update(notification._id, { $set: { read: true } })
+      });
+
       this.next();
     };
-    if(Router.onRun) //not sure when this changed so just to be safe
+    if (Router.onRun) //not sure when this changed so just to be safe
       Router.onRun(routeSeenByUser);
     else
       Router.load(routeSeenByUser);
@@ -32,13 +34,14 @@ Meteor.startup(function () {
 
   var runnersQuery = [];
   _.each(_.keys(Herald._clientRunners), function (runner) {
-    var query = {};
-    query['media.' + runner] = {send: true, sent: false};
-    runnersQuery.push(query);
+    runnersQuery.push(Herald._setProperty('media.' + runner, { 
+      send: true, sent: false 
+    }));
   });
 
-  if(_.isEmpty(runnersQuery)) return;
-  Herald.collection.find({$or: runnersQuery, read: false}).observe({
+  if (!runnersQuery.length) return;
+
+  Herald.collection.find({ $or: runnersQuery, read: false }).observe({
     added: function (notification) {
       Herald.escalate(notification)
     },
