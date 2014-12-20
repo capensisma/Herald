@@ -213,7 +213,7 @@ The courier also comes with an optional message tool, available on the notificat
   ```js
   {
     message: function () {return 'post: ' + this.data.post.name }
-  {
+  }
 
   instance.message() //'post: postName'
   ```
