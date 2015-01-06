@@ -2,7 +2,6 @@
 Meteor.startup(function () {
   //if no pattern is defined then skip this.
   // if (!Herald.settings.delayEscalation) return false;
-  console.log('Starting artwells:queue for Herald');
   Meteor.setInterval(function ( ){ Queue.run() }, Herald.settings.queueTimer); // by default, once a minute
 });
 
