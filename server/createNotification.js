@@ -26,7 +26,7 @@ Herald.createNotification = function (userIds, params) {
     // media - a list of all the media the notification can be sent on but has not been.
 
     var notification = {
-      timestamp: new Date().getTime(),
+      timestamp: new Date(),
       userId: user._id,
       courier: params.courier,
       data: params.data,
