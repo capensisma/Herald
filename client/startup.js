@@ -7,7 +7,7 @@ Tracker.autorun(function () {
 
 //if iron route is prescient then do some fun routing magic
 //basically if the user goes to a provided url, stored in the notification,
-//then make the notification as read. Because its safe to assume they know about 
+//then make the notification as read. Because its safe to assume they know about
 //what ever you were trying to tell them.
 Meteor.startup(function () {
 
@@ -16,7 +16,7 @@ Meteor.startup(function () {
     var routeSeenByUser = function () {
       //TODO (possibly): make this a method
       //TODO (possibly): allow for disable overall and/or on a per user basis
-      var notifications = Herald.collection.find({ url: this.path, read: false }, {
+      var notifications = Herald.collection.find({ url: this.url, read: false }, {
         fields: { read: 1 }
       });
 
@@ -34,8 +34,8 @@ Meteor.startup(function () {
 
   var runnersQuery = [];
   _.each(_.keys(Herald._clientRunners), function (runner) {
-    runnersQuery.push(Herald._setProperty('media.' + runner, { 
-      send: true, sent: false 
+    runnersQuery.push(Herald._setProperty('media.' + runner, {
+      send: true, sent: false
     }));
   });
 
