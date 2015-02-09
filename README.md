@@ -395,11 +395,16 @@ Herald.settings = {
   queueTimer: 60000, //run server queue once every minute
   userPreferenceDefault: true, //send notifications unless the user has disabled
   collectionName: 'notifications', //override herald collection name, must be set before meteor startup
-  useIronRouter: true //use iron:router if available.
+  useIronRouter: true, //use iron:router if available
+  expireAfterSeconds: 0 //automatically delete notifications after some time. Specify 0 (default) for no expiration
 }
 ```
 
 Herald uses [artwells:queue](https://github.com/artwells/meteor-queue) to manage server side async sending of notifications. All of the queue's default settings remain. Herald calls `Queue.run()` once every minute, unless `Herald.settings.queueTimer` has been changed. While developing you may wish to set that timer to 5 or 10 seconds.
+
+##### A note on Herald.settings.expireAfterSeconds:
+
+Use this setting with care. Under the hood, Herald just builds a TTL index on the timestamp value. This means that every time the setting is changed, a new index is built -- you have to manually teardown existing indexes on the timestamp. Also, beware of changing this value when your notification collection is big, since building an index on a large collection is a slow process. As a precaution, Herald attempts to verify that the collection is empty before creating the index.
 
 ## onRun [advanced usage only, experimental]
 
