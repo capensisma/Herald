@@ -1,5 +1,13 @@
 # Herald ChangeLog - up-to-date as possible.
 
+## v1.2.0
+  * getUserPreference not userPrefrence
+  * allow for nested courier (not documented)
+  * allow notifications to expire by time
+  * type fixes and removed console.logs
+  * fix iron:router path argument 
+  * Thanks: @erasaur, @dohomi, @delgermurun, @SachaG
+
 ## v1.1.3
   * Check if user is still logging in
 
