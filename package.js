@@ -11,7 +11,7 @@ Package.onUse(function(api) {
 
   //if iron route is present add 'seen route' logic
   api.use('iron:router@0.9.3 || 1.0.0', ['server', 'client'], {weak: true});
-  api.use('artwells:queue@0.0.3', 'server', {weak: true})
+  api.use('artwells:queue@0.0.0', 'server', {weak: true})
 
   api.addFiles([
     'lib/$herald.js', 
