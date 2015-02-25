@@ -2,7 +2,9 @@
 Meteor.startup(function () {
   //if no pattern is defined then skip this.
   // if (!Herald.settings.delayEscalation) return false;
-  Meteor.setInterval(function ( ){ Queue.run() }, Herald.settings.queueTimer); // by default, once a minute
+  if (Package['artwells:queue']) {
+    Meteor.setInterval(function ( ){ Queue.run() }, Herald.settings.queueTimer); // by default, once a minute
+  }
 });
 
 
@@ -12,8 +14,12 @@ Herald.SetupEscalations = function (notification) {
   _.each(_.keys(Herald._getCourier(notification.courier).media), function (medium) {
     if (!_.contains(_.keys(Herald._serverRunners), medium)) return; //Server only
     if (!notification.media[medium].send || notification.media[medium].sent) return; //already sent/don't send
-    var command = 'Meteor.call("heraldEscalate","' + notification._id + '", "' + medium + '")';
-    Queue.add({ command: command })
+    if (Package['artwells:queue']) {
+      var command = 'Meteor.call("heraldEscalate","' + notification._id + '", "' + medium + '")';
+      Queue.add({ command: command });
+    } else {
+      Meteor.call("heraldEscalate", notification._id, medium);
+    }
   });
 
   Herald.collection.update(notification._id, { $set: { escalated: true } } );

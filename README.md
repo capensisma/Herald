@@ -436,6 +436,8 @@ Herald.addCourier(name, {
 
 Note: The real time delay depends on many factors and may be longer then the give time. This is especially true for server side delays as Herald will wait until the next `Queue.run()` call.
 
+**NOTE:** the delay requires artwells:queue to be present in your app!
+
 **DANGER:** endless looping is possible! This will also cause numinous database writes for every delay.
 
 ##### transfer
