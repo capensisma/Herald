@@ -1,5 +1,8 @@
 # Herald ChangeLog - up-to-date as possible.
 
+## v1.3.0
+  * remvoed the requiremnt for artwells:queue
+
 ## v1.2.0
   * getUserPreference not userPrefrence
   * allow for nested courier (not documented)
