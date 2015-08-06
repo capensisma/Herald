@@ -33,6 +33,8 @@ Meteor.methods({
    * @param {string} medium
    */
   heraldEscalate: function (notificationId, medium) {
+    check(notificationId, Meteor.Collection.ObjectID)
+    check(medium, String)
     try {
       Herald.escalate(notificationId, medium);
     } catch (e) {
